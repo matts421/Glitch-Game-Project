@@ -1,4 +1,5 @@
 # `G1!tCh`
+![Logo](https://media.github.students.cs.ubc.ca/user/18340/files/1d058e26-90df-42bc-bf9e-25916f108242)
 
 ## A roguelike 2D-platformer
 
