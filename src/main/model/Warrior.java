@@ -6,7 +6,7 @@ public class Warrior extends GameCharacter {
     private static final int MAX_MANA = 50;
 
     public Warrior(boolean difficulty) {
-        super(MAX_MANA, MAX_HEALTH, MAX_DEFENSE, difficulty);
+        super(MAX_HEALTH, MAX_MANA, MAX_DEFENSE, difficulty);
     }
 
     // MODIFIES: this

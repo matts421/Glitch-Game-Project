@@ -7,11 +7,11 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import model.Game;
-import model.GameCharacter;
-import model.Warrior;
+import model.*;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TerminalGame {
     private Game game;
@@ -21,13 +21,25 @@ public class TerminalGame {
     public void start() throws IOException, InterruptedException {
         Warrior player = new Warrior(false);
 
+        ArrayList<Rectangle> barriers = new ArrayList<>();
+        barriers.add(new Rectangle(0, 3, 10, 1));
+        barriers.add(new Rectangle(6, 6, 3, 1));
+        barriers.add(new Rectangle(10, 20, 3, 1));
+        barriers.add(new Rectangle(10, 21, 3, 1));
+
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();
 
         TerminalSize terminalSize = screen.getTerminalSize();
 
+        barriers.add(new Rectangle(0,
+                terminalSize.getRows() - 2,
+                (terminalSize.getColumns() - 1) / 2, 1));
+
+        GameMap map = new GameMap(barriers, new Inventory());
+
         game = new Game((terminalSize.getColumns() - 1) / 2,
-                terminalSize.getRows() - 2, player);
+                terminalSize.getRows() - 2, player, map);
 
         beginTicks();
     }
@@ -68,6 +80,7 @@ public class TerminalGame {
 
     private void render() {
         drawPlayer();
+        drawBarriers();
     }
 
     private void drawPlayer() {
@@ -80,10 +93,20 @@ public class TerminalGame {
 //        }
     }
 
+    private void drawBarriers() {
+        for (Rectangle barrier : game.getMap().getBarriers()) {
+            for (int i = barrier.x; i <= barrier.width + barrier.x; i++) {
+                for (int j = barrier.y; j < barrier.height + barrier.y; j++) {
+                    drawPosition(i, j, TextColor.ANSI.WHITE, '\u2588');
+                }
+            }
+        }
+    }
+
     private void drawPosition(int xpos, int ypos, TextColor color, char c) {
         TextGraphics text = screen.newTextGraphics();
         text.setForegroundColor(color);
-        text.putString(xpos * 2,ypos + 1, String.valueOf(c));
+        text.putString(xpos * 2, ypos + 1, String.valueOf(c));
     }
 
 
