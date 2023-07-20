@@ -219,6 +219,7 @@ public class Game {
                     break;
                 }
             }
+
             for (Enemy enemy: map.getEnemies()) {
                 if (projectile.getModel().intersects(enemy.getModel())) {
                     projectilesToRemove.add(projectile);
@@ -369,11 +370,19 @@ public class Game {
         return map;
     }
 
+    public int getTickCount() {
+        return tickCount;
+    }
+
     public void setMap(GameMap map) {
         this.map = map;
     }
 
     public void setLevelOver(boolean over) {
         levelOver = over;
+    }
+
+    public void setTickCount(int tickCount) {
+        this.tickCount = tickCount;
     }
 }

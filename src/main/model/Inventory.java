@@ -15,8 +15,7 @@ public class Inventory {
     }
 
 
-    // REQUIRES: getCapacity() - quantity >= 0
-    //           AND quantity > 0
+    // REQUIRES: quantity > 0
     // MODIFIES: this
     // EFFECTS: if item not already in inventory, adds item with quantity to items.
     //          Otherwise, adds quantity to existing quantity stored in inventory.
