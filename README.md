@@ -18,7 +18,7 @@ to reach checkpoints to save their progress.
 ## User Stories
 - As a user, I want to be able to customize my playable character's appearance,
   and choose to specialize in one of the Magic, Warrior, or Ranged classes.
-- As a user, I want to be able to manipulate (add, remove, and move) items and currency in my inventory.
-- As a user, I want to be able to select a level stage to play.
+- As a user, I want to be able to add an arbitrary amount of coins to my inventory.
 - As a user, I want to be able to traverse the level stage (moving and jumping), and use my weapons to defeat enemies.
+- As a user, I want to be able to progress through different level stages after completing one.
  

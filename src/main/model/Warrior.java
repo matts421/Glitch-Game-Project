@@ -1,29 +1,25 @@
 package model;
 
+import com.googlecode.lanterna.TextColor;
+
+/*
+    Subclass of GameCharacter.
+    Specifies a Warrior's unique color, maximum health and mana, and string representation
+ */
 public class Warrior extends GameCharacter {
-    private static final int MAX_HEALTH = 50;
-    private static final int MAX_DEFENSE = 100;
-    private static final int MAX_MANA = 50;
+    private static final TextColor TEXT_COLOR = TextColor.ANSI.RED;
+    private static final int MAX_HEALTH = 5;
+    private static final int MAX_MANA = 5;
 
-    public Warrior(boolean difficulty) {
-        super(MAX_HEALTH, MAX_MANA, MAX_DEFENSE, difficulty);
+    // EFFECTS: creates warrior with health, mana, and color specified by
+    //          MAX_HEALTH, MAX_MANA, and TEXT_COLOR
+    public Warrior() {
+        super(MAX_HEALTH, MAX_MANA, TEXT_COLOR);
     }
 
-    // MODIFIES: this
-    // EFFECTS: perform basic attack action in direction
-    //          currently facing.
+    // EFFECTS: returns Warrior for string representation
     @Override
-    public void basicAttack() {
-
-    }
-
-    // REQUIRES: getMana() > 0
-    // MODIFIES: this
-    // EFFECTS: perform special attack action in direction
-    //          currently facing. Begins cool-down for next
-    //          specialAttack and de-increments mana.
-    @Override
-    public void specialAttack() {
-
+    public String toString() {
+        return "Warrior";
     }
 }
