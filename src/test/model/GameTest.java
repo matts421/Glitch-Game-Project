@@ -127,6 +127,14 @@ public class GameTest {
         map.getBarriers().add(barrier);
         assertTrue(game.onPlatform());
     }
+
+    @Test
+    public void testOnMiddlePlatform() {
+        Rectangle barrier = new Rectangle(gc.getPosX() - 2, gc.getPosY() + 1, 10, 1);
+        map.getBarriers().add(barrier);
+        assertTrue(game.onPlatform());
+    }
+
     @Test
     public void testTickPlayerNotOnPlatform() {
         game.tick();
@@ -175,6 +183,14 @@ public class GameTest {
     }
 
     @Test
+    public void testCollidedItemNull() {
+        Item item = new Item("test", TextColor.ANSI.WHITE, gc.getPosX() + 1, gc.getPosY());
+        map.getItems().addItem(item, 1);
+        Item newItem = game.collidedItem();
+        assertNull(newItem);
+    }
+
+    @Test
     public void testCycleCharacterClass() {
         game.cycleCharacterClass();
         assertEquals(TextColor.ANSI.CYAN, game.getPlayer().getColor());
@@ -216,6 +232,51 @@ public class GameTest {
         map.getBarriers().add(barrier);
         assertEquals(3, game.maxJump());
     }
+
+    @Test
+    public void testMaxJumpPlatform4AboveMiddle() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 5, 10, 1);
+        map.getBarriers().add(barrier1);
+
+        Rectangle barrier2 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 4, 10, 1);
+        map.getBarriers().add(barrier2);
+
+        assertEquals(3, game.maxJump());
+    }
+
+    @Test
+    public void testMaxJumpPlatformBelowNoneAbove() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 2, gc.getPosY() + 1, 10, 1);
+        map.getBarriers().add(barrier1);
+
+        assertEquals(Game.JUMP_HEIGHT, game.maxJump());
+    }
+
+    @Test
+    public void testMaxJumpPlatformCurrentDistSameAsBestDist() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 4, 10, 1);
+        map.getBarriers().add(barrier1);
+        map.getBarriers().add(barrier1);
+
+        assertEquals(3, game.maxJump());
+    }
+
+    /*
+    private int closestAbovePlatform() {
+        int bestDist = -1;
+        for (Rectangle barrier : map.getBarriers()) {
+            if (barrier.y < player.getPosY()
+                    && barrier.x <= player.getPosX()
+                    && (barrier.x + barrier.width) > player.getPosX()) {
+                int currentDist = (player.getPosY() - barrier.y - 1);
+                if (bestDist == -1 || currentDist < bestDist) {
+                    bestDist = currentDist;
+                }
+            }
+        }
+        return bestDist;
+    }
+        */
 
     @Test
     public void testTickProjectileToWall() {

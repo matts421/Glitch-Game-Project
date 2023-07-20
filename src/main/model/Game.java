@@ -178,7 +178,7 @@ public class Game {
 
     // EFFECTS: returns an item that a player is currently standing on. If not standing on any items in the map,
     //          returns null.
-    private Item collidedItem() {
+    public Item collidedItem() {
         Item item = null;
         for (Item i: map.getItems().getItems()) {
             if (player.getModel().intersects(i.getModel())) {
