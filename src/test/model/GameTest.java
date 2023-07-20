@@ -143,6 +143,15 @@ public class GameTest {
         assertFalse(game.onPlatform());
     }
 
+    @Test
+    public void testOnPlatformButNotFirst() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() + 10, 10, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX(), gc.getPosY() + 1, 10, 1);
+        map.getBarriers().add(barrier1);
+        map.getBarriers().add(barrier2);
+        assertTrue(game.onPlatform());
+    }
+
 
     @Test
     public void testTickPlayerNotOnPlatform() {
@@ -209,6 +218,25 @@ public class GameTest {
         assertEquals(TextColor.ANSI.RED, game.getPlayer().getColor());
     }
 
+    /*
+    // EFFECTS: returns the distance in pixels to the closest platform above the player. If there is no platform
+    //          above, return -1.
+    public int closestAbovePlatform() {
+        int bestDist = -1;
+        for (Rectangle barrier : map.getBarriers()) {
+            if (barrier.y < player.getPosY()
+                    && barrier.x <= player.getPosX()
+                    && (barrier.x + barrier.width) > player.getPosX()) {
+                int currentDist = (player.getPosY() - barrier.y - 1);
+                if (bestDist == -1 || currentDist < bestDist) {
+                    bestDist = currentDist;
+                }
+            }
+        }
+        return bestDist;
+    }
+     */
+
     @Test
     public void testClosestAbovePlatformNone() {
         assertEquals(-1, game.closestAbovePlatform());
@@ -218,8 +246,8 @@ public class GameTest {
     public void testClosestAbovePlatformNoneAbove() {
         Rectangle barrier1 = new Rectangle(gc.getPosX() - 4, gc.getPosY() + 1, 10, 1);
         Rectangle barrier2 = new Rectangle(gc.getPosX() - 14, gc.getPosY() + 2, 10, 1);
-        Rectangle barrier3 = new Rectangle(gc.getPosX() - 24, gc.getPosY() + 3, 10, 1);
-        Rectangle barrier4 = new Rectangle(gc.getPosX() - 34, gc.getPosY() + 4, 10, 1);
+        Rectangle barrier3 = new Rectangle(gc.getPosX() + 1, gc.getPosY() - 3, 10, 1);
+        Rectangle barrier4 = new Rectangle(gc.getPosX() - 34, gc.getPosY() - 3, 10, 1);
 
         map.getBarriers().add(barrier1);
         map.getBarriers().add(barrier2);
