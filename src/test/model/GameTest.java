@@ -246,13 +246,17 @@ public class GameTest {
     public void testClosestAbovePlatformNoneAbove() {
         Rectangle barrier1 = new Rectangle(gc.getPosX() - 4, gc.getPosY() + 1, 10, 1);
         Rectangle barrier2 = new Rectangle(gc.getPosX() - 14, gc.getPosY() + 2, 10, 1);
-        Rectangle barrier3 = new Rectangle(gc.getPosX() + 1, gc.getPosY() - 3, 10, 1);
-        Rectangle barrier4 = new Rectangle(gc.getPosX() - 34, gc.getPosY() - 3, 10, 1);
+        Rectangle barrier3 = new Rectangle(gc.getPosX() - 24, gc.getPosY() + 3, 10, 1);
+        Rectangle barrier4 = new Rectangle(gc.getPosX() - 34, gc.getPosY() + 4, 10, 1);
+        Rectangle barrier5 = new Rectangle(gc.getPosX() + 1, gc.getPosY() - 3, 10, 1);
+        Rectangle barrier6 = new Rectangle(gc.getPosX() - 34, gc.getPosY() - 3, 10, 1);
 
         map.getBarriers().add(barrier1);
         map.getBarriers().add(barrier2);
         map.getBarriers().add(barrier3);
         map.getBarriers().add(barrier4);
+        map.getBarriers().add(barrier5);
+        map.getBarriers().add(barrier6);
 
         assertEquals(-1, game.closestAbovePlatform());
     }
