@@ -8,7 +8,7 @@ import java.awt.*;
     Represents an enemy that the player will kill in the game.
  */
 public class Enemy {
-    public static final char RENDER_MODEL = '☠';
+    public static final char RENDER_MODEL = '@';
     public static final int DAMAGE = 1;
     private TextColor color;
     private int posX;

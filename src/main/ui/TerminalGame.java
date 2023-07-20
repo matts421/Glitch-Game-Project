@@ -252,7 +252,7 @@ public class TerminalGame {
     // EFFECTS: draws a health bar at the top of the screen depicting the player's remaining lives
     private void drawHealthBar() {
         for (int i = 0; i < game.getPlayer().getHealth(); i++) {
-            drawPosition(i, 0, TextColor.ANSI.RED, '♥');
+            drawPosition(i, 0, TextColor.ANSI.RED, "<3");
         }
     }
 
@@ -260,7 +260,7 @@ public class TerminalGame {
     // EFFECTS: draws a mana bar at the top of the screen depicting the player's remaining mana
     private void drawManaBar() {
         for (int i = 6; i < game.getPlayer().getMana() + 6; i++) {
-            drawPosition(i, 0, TextColor.ANSI.BLUE, '★');
+            drawPosition(i, 0, TextColor.ANSI.BLUE, '*');
         }
     }
 
