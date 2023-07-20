@@ -152,6 +152,21 @@ public class GameTest {
         assertTrue(game.onPlatform());
     }
 
+    @Test
+    public void testBarelyNotOnPlatformOnRight() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 10, gc.getPosY() + 1, 10, 1);
+        map.getBarriers().add(barrier1);
+        assertFalse(game.onPlatform());
+    }
+
+    @Test
+    public void testOnPlatformInside() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY(), 10, 1);
+        map.getBarriers().add(barrier1);
+        assertFalse(game.onPlatform());
+    }
+
+
 
     @Test
     public void testTickPlayerNotOnPlatform() {
