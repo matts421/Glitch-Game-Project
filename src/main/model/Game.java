@@ -190,7 +190,7 @@ public class Game {
 
     // EFFECTS: returns the distance in pixels to the closest platform above the player. If there is no platform
     //          above, return -1.
-    private int closestAbovePlatform() {
+    public int closestAbovePlatform() {
         int bestDist = -1;
         for (Rectangle barrier : map.getBarriers()) {
             if (barrier.y < player.getPosY()

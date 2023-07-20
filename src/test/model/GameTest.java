@@ -121,6 +121,7 @@ public class GameTest {
     public void testNotOnPlatform() {
         assertFalse(game.onPlatform());
     }
+
     @Test
     public void testOnPlatform() {
         Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + 1, 1, 1);
@@ -134,6 +135,14 @@ public class GameTest {
         map.getBarriers().add(barrier);
         assertTrue(game.onPlatform());
     }
+
+    @Test
+    public void testNotOnPlatformButAbove() {
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + 2, 10, 1);
+        map.getBarriers().add(barrier);
+        assertFalse(game.onPlatform());
+    }
+
 
     @Test
     public void testTickPlayerNotOnPlatform() {
@@ -201,7 +210,72 @@ public class GameTest {
     }
 
     @Test
+    public void testClosestAbovePlatformNone() {
+        assertEquals(-1, game.closestAbovePlatform());
+    }
+
+    @Test
+    public void testClosestAbovePlatformNoneAbove() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 4, gc.getPosY() + 1, 10, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX() - 14, gc.getPosY() + 2, 10, 1);
+        Rectangle barrier3 = new Rectangle(gc.getPosX() - 24, gc.getPosY() + 3, 10, 1);
+        Rectangle barrier4 = new Rectangle(gc.getPosX() - 34, gc.getPosY() + 4, 10, 1);
+
+        map.getBarriers().add(barrier1);
+        map.getBarriers().add(barrier2);
+        map.getBarriers().add(barrier3);
+        map.getBarriers().add(barrier4);
+
+        assertEquals(-1, game.closestAbovePlatform());
+    }
+
+    @Test
+    public void testClosestAbovePlatformAbove() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() -1, 1, 1);
+        map.getBarriers().add(barrier1);
+
+        assertEquals(0, game.closestAbovePlatform());
+    }
+
+    @Test
+    public void testClosestAbovePlatformNotFirst() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() - 10, 1, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX(), gc.getPosY() - 3, 1, 1);
+        map.getBarriers().add(barrier1);
+        map.getBarriers().add(barrier2);
+
+        assertEquals(2, game.closestAbovePlatform());
+    }
+
+    @Test
+    public void testClosestAbovePlatformInMiddle() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 3, gc.getPosY() - 10, 10, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX() - 4, gc.getPosY() - 3, 15, 1);
+        map.getBarriers().add(barrier1);
+        map.getBarriers().add(barrier2);
+
+        assertEquals(2, game.closestAbovePlatform());
+    }
+
+    @Test
+    public void testClosestAbovePlatformLowerNotInRange() {
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 3, gc.getPosY() - 10, 10, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX() + 1, gc.getPosY() - 3, 15, 1);
+        map.getBarriers().add(barrier1);
+        map.getBarriers().add(barrier2);
+
+        assertEquals(9, game.closestAbovePlatform());
+    }
+
+    @Test
     public void testMaxJumpNoPlatformAbove() {
+        assertEquals(Game.JUMP_HEIGHT, game.maxJump());
+    }
+
+    @Test
+    public void testMaxJumpPlatformWayAbove() {
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 20, 1, 1);
+        map.getBarriers().add(barrier);
         assertEquals(Game.JUMP_HEIGHT, game.maxJump());
     }
 
@@ -260,23 +334,6 @@ public class GameTest {
 
         assertEquals(3, game.maxJump());
     }
-
-    /*
-    private int closestAbovePlatform() {
-        int bestDist = -1;
-        for (Rectangle barrier : map.getBarriers()) {
-            if (barrier.y < player.getPosY()
-                    && barrier.x <= player.getPosX()
-                    && (barrier.x + barrier.width) > player.getPosX()) {
-                int currentDist = (player.getPosY() - barrier.y - 1);
-                if (bestDist == -1 || currentDist < bestDist) {
-                    bestDist = currentDist;
-                }
-            }
-        }
-        return bestDist;
-    }
-        */
 
     @Test
     public void testTickProjectileToWall() {
