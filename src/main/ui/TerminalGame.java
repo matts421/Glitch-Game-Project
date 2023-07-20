@@ -206,7 +206,7 @@ public class TerminalGame {
     //          a smile emoticon.
     private void drawPlayer() {
         GameCharacter player = game.getPlayer();
-        drawPosition(player.getPosX(), player.getPosY(), player.getColor(), '☺');
+        drawPosition(player.getPosX(), player.getPosY(), player.getColor(), 'o');
     }
 
     // MODIFIES: this
@@ -271,7 +271,7 @@ public class TerminalGame {
         for (Rectangle barrier : game.getMap().getBarriers()) {
             for (int i = barrier.x; i < barrier.width + barrier.x; i++) {
                 for (int j = barrier.y; j < barrier.height + barrier.y; j++) {
-                    drawPosition(i, j, TextColor.ANSI.WHITE, '█');
+                    drawPosition(i, j, TextColor.ANSI.WHITE, 'T');
                 }
             }
         }

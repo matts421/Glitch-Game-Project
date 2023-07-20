@@ -9,8 +9,8 @@ import java.awt.*;
  */
 public class Projectile {
     public static final int PROJECTILE_SPEED = 1;
-    public static final char LEFT_PROJECTILE = '←';
-    public static final char RIGHT_PROJECTILE = '→';
+    public static final char LEFT_PROJECTILE = '<';
+    public static final char RIGHT_PROJECTILE = '>';
     private TextColor color;
     private int posX;
     private int posY;
