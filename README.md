@@ -21,4 +21,6 @@ to reach checkpoints to save their progress.
 - As a user, I want to be able to add an arbitrary amount of coins to my inventory.
 - As a user, I want to be able to traverse the level stage (moving and jumping), and use my weapons to defeat enemies.
 - As a user, I want to be able to progress through different level stages after completing one.
+- As a user, I want to have the option to save all of my progress in the game at any point.
+- As a user, I want to have the option to load a previous save file upon launching the game.
  
