@@ -21,7 +21,9 @@ public class GameTest {
 
     @BeforeEach
     public void runBefore() {
-        gc = new Warrior();
+        Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
+        gc = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
         barriers = new ArrayList<>();
         enemies = new ArrayList<>();
         e = new Enemy(0, 0);
@@ -29,7 +31,7 @@ public class GameTest {
         inventory = new Inventory();
         projectiles = new ArrayList<>();
         map = new GameMap(barriers, inventory, enemies, projectiles, "test");
-        game = new Game(100, 100, gc, map);
+        game = new Game(100, 100, 0, gc, map);
     }
 
     @Test

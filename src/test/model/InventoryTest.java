@@ -99,47 +99,4 @@ public class InventoryTest {
         assertEquals(1, inventory.getQuantity(item3));
 
     }
-
-    @Test
-    public void getQuantityStringNotInKeys() {
-        assertEquals(0, inventory.getQuantity("bob"));
-    }
-
-    @Test
-    public void getQuantityOneStringInKeys() {
-        Item item1 = new Item("1", TextColor.ANSI.WHITE, 0, 0);
-        inventory.addItem(item1, 1);
-
-        assertEquals(1, inventory.getQuantity("1"));
-    }
-
-    @Test
-    public void getQuantityTwoStringsInKeys() {
-        Item item1 = new Item("1", TextColor.ANSI.WHITE, 0, 0);
-        Item item2 = new Item("1", TextColor.ANSI.WHITE, 0, 0);
-        inventory.addItem(item1, 1);
-        inventory.addItem(item2, 5);
-
-        assertEquals(6, inventory.getQuantity("1"));
-    }
-
-    @Test
-    public void getQuantityManyStringsInKeys() {
-        Item item1 = new Item("1", TextColor.ANSI.WHITE, 0, 0);
-        Item item2 = new Item("2", TextColor.ANSI.WHITE, 0, 0);
-        Item item3 = new Item("3", TextColor.ANSI.WHITE, 1, 10);
-        Item item4 = new Item("3", TextColor.ANSI.WHITE, 0, 0);
-        Item item5 = new Item("5", TextColor.ANSI.WHITE, 0, 0);
-        inventory.addItem(item1, 1);
-        inventory.addItem(item2, 5);
-        inventory.addItem(item4, 1);
-        inventory.addItem(item5, 100);
-        inventory.addItem(item3, 60);
-
-        assertEquals(1, inventory.getQuantity("1"));
-        assertEquals(5, inventory.getQuantity("2"));
-        assertEquals(61, inventory.getQuantity("3"));
-        assertEquals(100, inventory.getQuantity("5"));
-        assertEquals(0, inventory.getQuantity("6"));
-    }
 }

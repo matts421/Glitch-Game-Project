@@ -4,6 +4,8 @@ import com.googlecode.lanterna.TextColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameCharacterTest {
@@ -11,7 +13,10 @@ public class GameCharacterTest {
 
     @BeforeEach
     public void runBefore() {
-        gc = new GameCharacter(0, 0, TextColor.ANSI.WHITE);
+        Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
+        Inventory inventory = new Inventory();
+        gc = new GameCharacter(0, 0, 1, false,
+                GameCharacter.START_X, GameCharacter.START_Y, inventory, model, TextColor.ANSI.WHITE);
     }
 
     @Test

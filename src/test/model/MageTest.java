@@ -4,6 +4,8 @@ import com.googlecode.lanterna.TextColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,7 +14,9 @@ public class MageTest {
 
     @BeforeEach
     public void runBefore() {
-        m = new Mage();
+        Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
+        m = new Mage(Mage.MAX_HEALTH, Mage.MAX_MANA, 1, false,
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
     }
 
     @Test

@@ -4,6 +4,8 @@ import com.googlecode.lanterna.TextColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,7 +14,9 @@ public class RangerTest {
 
     @BeforeEach
     public void runBefore() {
-        r = new Ranger();
+        Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
+        r = new Ranger(Ranger.MAX_HEALTH, Ranger.MAX_MANA, 1, false,
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
     }
 
     @Test

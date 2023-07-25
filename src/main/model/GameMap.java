@@ -1,12 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 /*
     Represents the level stage of the game.
  */
-public class GameMap {
+public class GameMap extends HasModel implements Writable {
     private String name;
     private ArrayList<Rectangle> barriers;
     private Inventory items;
@@ -73,4 +77,36 @@ public class GameMap {
         return name;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONArray barriersJson = new JSONArray();
+        for (Rectangle barrier: barriers) {
+            barriersJson.put(rectangleToJson(barrier));
+        }
+
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("items", items.toJson());
+        json.put("barriers", barriersJson);
+        json.put("enemies", enemiesToJson());
+        json.put("projectiles", projectilesToJson());
+
+        return json;
+    }
+
+    private JSONArray projectilesToJson() {
+        JSONArray json = new JSONArray();
+        for (Projectile projectile: projectiles) {
+            json.put(projectile.toJson());
+        }
+        return json;
+    }
+
+    private JSONArray enemiesToJson() {
+        JSONArray json = new JSONArray();
+        for (Enemy enemy: enemies) {
+            json.put(enemy.toJson());
+        }
+        return json;
+    }
 }

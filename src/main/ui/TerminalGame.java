@@ -13,8 +13,11 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,11 +31,14 @@ import static com.googlecode.lanterna.input.KeyType.*;
           denoted with this disclaimer as such.
  */
 public class TerminalGame {
+    private static final String JSON_STORE = "./data/game.json";
     private WindowBasedTextGUI endGui;
     private Game game;
     private Screen screen;
     private int maxX;
     private int maxY;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // MODIFIES: this
     // EFFECTS: starts game cycle. Initializes player's class to default Warrior, and begins game on Map1.
@@ -40,8 +46,9 @@ public class TerminalGame {
     //
     //  **NOTE**: This code was inspired by Matzen Kotb's Lanterna Snake Console Game.
     public void start() throws IOException, InterruptedException {
-        Warrior player = new Warrior();
-
+        Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
+        Warrior player = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
 
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();
@@ -52,7 +59,7 @@ public class TerminalGame {
 
         GameMap testMap = new GameMap(new ArrayList<>(), new Inventory(), new ArrayList<>(), new ArrayList<>(),
                 "temp");
-        game = new Game(maxX, maxY, player, testMap);
+        game = new Game(maxX, maxY, 0, player, testMap);
         GameMap newMap = game.buildMapOne();
 
         game.setMap(newMap);
@@ -65,6 +72,9 @@ public class TerminalGame {
     //
     // **NOTE**: This code was inspired by Matzen Kotb's Lanterna Snake Console Game.
     public void beginTicks() throws IOException, InterruptedException {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+
         while (!game.isEnded()) {
             tick();
             Thread.sleep(1000L / Game.TICKS_PER_SECOND);
@@ -78,6 +88,7 @@ public class TerminalGame {
     //
     //  **NOTE**: This code was inspired by Matzen Kotb's Lanterna Snake Console Game.
     public void tick() throws IOException {
+
         handleInput();
 
         if (game.isLevelOver()) {
@@ -144,6 +155,10 @@ public class TerminalGame {
             }
         } else if (type == F1) {
             game.cycleCharacterClass();
+        } else if (type == F2) {
+            saveGame();
+        } else if (type == F3) {
+            loadGame();
         }
     }
 
@@ -180,10 +195,11 @@ public class TerminalGame {
     private void drawEndScreen() {
         endGui = new MultiWindowTextGUI(screen);
         GameCharacter player = game.getPlayer();
+        Item coin = new Item("coin", TextColor.ANSI.WHITE, 0, 0);
 
         new MessageDialogBuilder()
                 .setTitle("Game over!")
-                .setText("You finished with " + player.getInventory().getQuantity("coin") + " coins!")
+                .setText("You finished with " + player.getInventory().getQuantity(coin) + " coins!")
                 .addButton(MessageDialogButton.Close)
                 .build()
                 .showDialog(endGui);
@@ -295,6 +311,27 @@ public class TerminalGame {
         TextGraphics text = screen.newTextGraphics();
         text.setForegroundColor(color);
         text.putString(xpos * 2, ypos + 1, s);
+    }
+
+    // EFFECTS: saves the game to file
+    private void saveGame() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(game);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads game from file
+    private void loadGame() {
+        try {
+            game = jsonReader.read();
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 
 

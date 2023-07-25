@@ -1,6 +1,8 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.awt.*;
 
@@ -8,8 +10,10 @@ import java.awt.*;
     The parent class for the three subclasses of Mage, Warrior, and Ranger.
     Represents the game player's character.
  */
-public class GameCharacter {
+public class GameCharacter extends HasModel implements Writable {
     public static final int MANA_COST = 1;
+    public static final int START_X = 0;
+    public static final int START_Y = 21;
     private TextColor color;
     private int health;
     private int mana;
@@ -25,16 +29,18 @@ public class GameCharacter {
     //          Starts with empty inventory, facing right, and position
     //          in the bottom left corner of the screen. Hit-box is a single
     //          pixel centered at the x/y position.
-    public GameCharacter(int health, int mana, TextColor color) {
+    public GameCharacter(int health, int mana, int direction, boolean airborne,
+                         int posX, int posY, Inventory inventory, Rectangle model, TextColor color) {
         this.health = health;
         this.mana = mana;
         this.color = color;
-        inventory = new Inventory();
-        direction = 1;
+        this.inventory = inventory;
+        this.direction = direction;
+        this.airborne = airborne;
 
-        posX = 0;
-        posY = 21;
-        model = new Rectangle(posX, posY, 1, 1);
+        this.posX = posX;
+        this.posY = posY;
+        this.model = model;
     }
 
     // MODIFIES: this
@@ -165,4 +171,27 @@ public class GameCharacter {
         return mana;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        String name;
+
+        if (color == TextColor.ANSI.RED) {
+            name = "Warrior";
+        } else if (color == TextColor.ANSI.CYAN) {
+            name = "Mage";
+        } else {
+            name = "Ranger";
+        }
+
+        json.put("name", name);
+        json.put("health", health);
+        json.put("mana", mana);
+        json.put("direction", direction);
+        json.put("airborne", airborne);
+        json.put("inventory", inventory.toJson());
+        json.put("position", createPosition(posX, posY));
+        json.put("model", rectangleToJson(model));
+        return json;
+    }
 }

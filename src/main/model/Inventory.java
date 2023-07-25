@@ -1,12 +1,15 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.HashMap;
 import java.util.Set;
 
 /*
     Acts as a container for both the map and player's items.
  */
-public class Inventory {
+public class Inventory implements Writable {
     private HashMap<Item, Integer> items;
 
     // EFFECTS: creates new inventory represented as a hashmap of items.
@@ -39,25 +42,39 @@ public class Inventory {
         }
     }
 
-    // EFFECTS: returns number of times item appears in inventory.
+    // EFFECTS: returns number of times item appears in inventory. If not in inventory, return 0.
     public int getQuantity(Item item) {
-        return items.get(item);
+        try {
+            return items.get(item);
+        } catch (NullPointerException npe) {
+            return 0;
+        }
     }
 
-    // EFFECTS: returns number of times item with name itemName appears in inventory.
-    public int getQuantity(String itemName) {
-        int totalQuantity = 0;
-        for (Item item: items.keySet()) {
-            if (item.getName().equals(itemName)) {
-                totalQuantity += items.get(item);
-            }
-        }
-        return totalQuantity;
-    }
+//    // EFFECTS: returns number of times item with name itemName appears in inventory.
+//    public int getQuantity(String itemName) {
+//        int totalQuantity = 0;
+//        for (Item item: items.keySet()) {
+//            if (item.getName().equals(itemName)) {
+//                totalQuantity += items.get(item);
+//            }
+//        }
+//        return totalQuantity;
+//    }
 
     public Set<Item> getItems() {
         return items.keySet();
     }
 
-
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        for (Item item: items.keySet()) {
+            JSONObject itemJson = new JSONObject();
+            itemJson.put(item.getName(), item.toJson());
+            itemJson.put("quantity", getQuantity(item));
+            json.put(item.getName(), itemJson);
+        }
+        return json;
+    }
 }

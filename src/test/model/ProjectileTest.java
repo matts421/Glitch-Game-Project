@@ -4,6 +4,8 @@ import com.googlecode.lanterna.TextColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProjectileTest {
@@ -12,7 +14,11 @@ public class ProjectileTest {
 
     @BeforeEach
     public void runBefore() {
-        gc = new GameCharacter(0, 0, TextColor.ANSI.WHITE);
+        Inventory inventory = new Inventory();
+        Rectangle model = new Rectangle(0, 0, 1, 1);
+
+        gc = new GameCharacter(0, 0, 1, false, 0, 0,
+                inventory, model, TextColor.ANSI.WHITE);
         gc.setPosX(0);
         gc.setPosY(0);
         gc.updateModel();

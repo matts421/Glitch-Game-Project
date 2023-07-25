@@ -1,6 +1,9 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,7 +12,7 @@ import java.util.Random;
     Represents the Glitch game itself. Encompasses all game logic and rules.
 */
 
-public class Game {
+public class Game implements Writable {
     public static final int TICKS_PER_SECOND = 10;
     public static final int JUMP_HEIGHT = 5;
     public static final int GRAVITY = 1;
@@ -25,14 +28,14 @@ public class Game {
 
     // EFFECTS: creates new game object with max x and y bounds, a character, and a map for the leve stage.
     //          The number of ticks starts at 0, and the game has not ended or completed the level stage.
-    public Game(int maxX, int maxY, GameCharacter player, GameMap map) {
+    public Game(int maxX, int maxY, int tickCount, GameCharacter player, GameMap map) {
         this.maxX = maxX;
         this.maxY = maxY;
         this.player = player;
         ended = false;
         levelOver = false;
         this.map = map;
-        tickCount = 0;
+        this.tickCount = tickCount;
     }
 
     // MODIFIES: this
@@ -95,7 +98,7 @@ public class Game {
         if (playerItemCollision()) {
             Item item = collidedItem();
             player.getInventory().addItem(item, map.getItems().getQuantity(item));
-            map.removeItem(item, map.getItems().getQuantity(item.getName()));
+            map.removeItem(item, map.getItems().getQuantity(item));
         }
     }
 
@@ -109,13 +112,17 @@ public class Game {
         int currentY = player.getPosY();
         boolean currentAirborne = player.isAirborne();
         Inventory currentInventory = player.getInventory();
+        Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
 
         if (player.getColor() == TextColor.ANSI.RED) {
-            player = new Mage();
+            player = new Mage(Mage.MAX_HEALTH, Mage.MAX_MANA, 1, false,
+                    GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
         } else if (player.getColor() == TextColor.ANSI.CYAN) {
-            player = new Ranger();
+            player = new Ranger(Ranger.MAX_HEALTH, Ranger.MAX_MANA, 1, false,
+                    GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
         } else {
-            player = new Warrior();
+            player = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
+                    GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
         }
 
         player.setMana(currentMana);
@@ -352,6 +359,17 @@ public class Game {
         barriers.add(new Rectangle(15, maxY, 9, 1));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "3");
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("maxX", maxX);
+        json.put("maxY", maxY);
+        json.put("player", player.toJson());
+        json.put("map", map.toJson());
+        json.put("ticks", tickCount);
+        return json;
     }
 
     public boolean isEnded() {

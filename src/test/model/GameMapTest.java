@@ -63,7 +63,11 @@ public class GameMapTest {
 
     @Test
     public void testAddOneProjectile() {
-        GameCharacter gc = new GameCharacter(0,0, TextColor.ANSI.WHITE);
+        Inventory inventory = new Inventory();
+        Rectangle model = new Rectangle(0, 0, 1, 1);
+
+        GameCharacter gc = new GameCharacter(0, 0, 1, false, 0, 0,
+                inventory, model, TextColor.ANSI.WHITE);
         gc.setPosY(0);
         gc.updateModel();
 
@@ -75,7 +79,11 @@ public class GameMapTest {
 
     @Test
     public void testRemoveOneProjectile() {
-        GameCharacter gc = new GameCharacter(0,0, TextColor.ANSI.WHITE);
+        Inventory inventory = new Inventory();
+        Rectangle model = new Rectangle(0, 0, 1, 1);
+
+        GameCharacter gc = new GameCharacter(0, 0, 1, false, 0, 0,
+                inventory, model, TextColor.ANSI.WHITE);
         gc.setPosY(0);
         gc.updateModel();
 
