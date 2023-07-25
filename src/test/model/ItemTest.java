@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.awt.*;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ItemTest {
     Item item;
@@ -57,7 +56,14 @@ public class ItemTest {
     public void testEqualsNotSameClass() {
         Enemy e = new Enemy(0, 0);
 
-        assertFalse(item.equals(e));
+        assertNotEquals(item, e);
+    }
+
+    @Test
+    public void testEqualsNull() {
+        Item i = null;
+
+        assertNotEquals(item, i);
     }
 
     @Test
@@ -71,7 +77,7 @@ public class ItemTest {
     public void testEqualsNotSameName() {
         Item item2 = new Item("not test", TextColor.ANSI.WHITE, 0, 0);
 
-        assertFalse(item.equals(item2));
+        assertNotEquals(item, item2);
     }
 
     @Test

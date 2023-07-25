@@ -1,6 +1,8 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +42,13 @@ public class EnemyTest {
         assertEquals(0, e2.getModel().y);
         assertEquals(1, e2.getModel().width);
         assertEquals(1, e2.getModel().height);
+    }
+
+    @Test
+    public void testToJson() {
+        JSONObject jsonObject = e.toJson();
+        JSONArray position = jsonObject.getJSONArray("position");
+        assertEquals(position.get(0), 0);
+        assertEquals(position.get(1), 0);
     }
 }
