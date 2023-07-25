@@ -1,6 +1,7 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -235,25 +236,6 @@ public class GameTest {
         assertEquals(TextColor.ANSI.RED, game.getPlayer().getColor());
     }
 
-    /*
-    // EFFECTS: returns the distance in pixels to the closest platform above the player. If there is no platform
-    //          above, return -1.
-    public int closestAbovePlatform() {
-        int bestDist = -1;
-        for (Rectangle barrier : map.getBarriers()) {
-            if (barrier.y < player.getPosY()
-                    && barrier.x <= player.getPosX()
-                    && (barrier.x + barrier.width) > player.getPosX()) {
-                int currentDist = (player.getPosY() - barrier.y - 1);
-                if (bestDist == -1 || currentDist < bestDist) {
-                    bestDist = currentDist;
-                }
-            }
-        }
-        return bestDist;
-    }
-     */
-
     @Test
     public void testClosestAbovePlatformNone() {
         assertEquals(-1, game.closestAbovePlatform());
@@ -470,5 +452,15 @@ public class GameTest {
 
         game.setMap(game.getNextMap());
         assertEquals("1", game.getMap().getName());
+    }
+
+    @Test
+    public void testToJson() {
+        JSONObject jsonObject = game.toJson();
+        assertEquals(100, jsonObject.getInt("maxX"));
+        assertEquals(100, jsonObject.getInt("maxY"));
+        assertEquals(0, jsonObject.getInt("ticks"));
+        assertFalse(jsonObject.getJSONObject("player").isEmpty());
+        assertFalse(jsonObject.getJSONObject("map").isEmpty());
     }
 }

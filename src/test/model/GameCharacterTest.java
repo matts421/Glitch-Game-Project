@@ -1,6 +1,7 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -234,4 +235,69 @@ public class GameCharacterTest {
 
         assertEquals(testInventory, gc.getInventory());
     }
+
+    @Test
+    public void testToJsonGeneral() {
+        JSONObject jsonObject = gc.toJson();
+        assertEquals(0, jsonObject.getInt("health"));
+        assertEquals(0, jsonObject.getInt("mana"));
+        assertEquals(1, jsonObject.getInt("direction"));
+        assertEquals(false, jsonObject.getBoolean("airborne"));
+    }
+
+    @Test
+    public void testToJsonWarrior() {
+        Inventory inventory = new Inventory();
+        Rectangle model = new Rectangle(0, 0, 1, 1);
+        Warrior w = new Warrior(0, 0, 1, false, 0, 0,
+                inventory, model);
+
+        JSONObject jsonObject = w.toJson();
+        assertEquals("Warrior", jsonObject.getString("name"));
+    }
+
+    @Test
+    public void testToJsonMage() {
+        Inventory inventory = new Inventory();
+        Rectangle model = new Rectangle(0, 0, 1, 1);
+        Mage m = new Mage(0, 0, 1, false, 0, 0,
+                inventory, model);
+
+        JSONObject jsonObject = m.toJson();
+        assertEquals("Mage", jsonObject.getString("name"));
+    }
+
+    @Test
+    public void testToJsonRanger() {
+        Inventory inventory = new Inventory();
+        Rectangle model = new Rectangle(0, 0, 1, 1);
+        Ranger r = new Ranger(0, 0, 1, false, 0, 0,
+                inventory, model);
+
+        JSONObject jsonObject = r.toJson();
+        assertEquals("Ranger", jsonObject.getString("name"));
+    }
+
+    /*
+    JSONObject json = new JSONObject();
+        String name;
+
+        if (color == TextColor.ANSI.RED) {
+            name = "Warrior";
+        } else if (color == TextColor.ANSI.CYAN) {
+            name = "Mage";
+        } else {
+            name = "Ranger";
+        }
+
+        json.put("name", name);
+        json.put("health", health);
+        json.put("mana", mana);
+        json.put("direction", direction);
+        json.put("airborne", airborne);
+        json.put("inventory", inventory.toJson());
+        json.put("position", createPosition(posX, posY));
+        json.put("model", rectangleToJson(model));
+        return json;
+     */
 }

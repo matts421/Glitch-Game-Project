@@ -1,6 +1,8 @@
 package model;
 
 import com.googlecode.lanterna.TextColor;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -101,5 +103,74 @@ public class GameMapTest {
 
         assertFalse(map.getEnemies().contains(e));
     }
+
+    @Test
+    public void testToJsonEmpty() {
+        enemies.remove(e);
+        JSONObject jsonObject = map.toJson();
+
+        JSONArray enemies = jsonObject.getJSONArray("enemies");
+        JSONArray projectiles = jsonObject.getJSONArray("projectiles");
+        JSONArray barriers = jsonObject.getJSONArray("barriers");
+
+        assertEquals("test", jsonObject.getString("name"));
+        assertTrue(enemies.isEmpty());
+        assertTrue(projectiles.isEmpty());
+        assertTrue(barriers.isEmpty());
+        assertTrue(jsonObject.getJSONObject("items").isEmpty());
+    }
+
+    @Test
+    public void testToJsonNotEmpty() {
+        map.getBarriers().add(new Rectangle(0,0,1, 1));
+        map.addProjectile(new Projectile(0, 0, 1, TextColor.ANSI.WHITE,
+                new Rectangle(0, 0, 1,1)));
+
+        JSONObject jsonObject = map.toJson();
+
+        JSONArray enemies = jsonObject.getJSONArray("enemies");
+        JSONArray projectiles = jsonObject.getJSONArray("projectiles");
+        JSONArray barriers = jsonObject.getJSONArray("barriers");
+
+        assertEquals("test", jsonObject.getString("name"));
+        assertFalse(enemies.isEmpty());
+        assertFalse(projectiles.isEmpty());
+        assertFalse(barriers.isEmpty());
+        assertTrue(jsonObject.getJSONObject("items").isEmpty());
+    }
+
+    /*
+    public JSONObject toJson() {
+        JSONArray barriersJson = new JSONArray();
+        for (Rectangle barrier: barriers) {
+            barriersJson.put(rectangleToJson(barrier));
+        }
+
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("items", items.toJson());
+        json.put("barriers", barriersJson);
+        json.put("enemies", enemiesToJson());
+        json.put("projectiles", projectilesToJson());
+
+        return json;
+    }
+
+    private JSONArray projectilesToJson() {
+        JSONArray json = new JSONArray();
+        for (Projectile projectile: projectiles) {
+            json.put(projectile.toJson());
+        }
+        return json;
+    }
+
+    private JSONArray enemiesToJson() {
+        JSONArray json = new JSONArray();
+        for (Enemy enemy: enemies) {
+            json.put(enemy.toJson());
+        }
+        return json;
+    }
+     */
 
 }
