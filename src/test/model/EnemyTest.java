@@ -4,17 +4,21 @@ import com.googlecode.lanterna.TextColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EnemyTest {
     Enemy e;
+    Enemy e2;
     @BeforeEach
     public void runBefore() {
         e = new Enemy(0, 0);
+        e2 = new Enemy(0, 0, new Rectangle(0, 0, 1, 1));
     }
 
     @Test
-    public void testConstructor() {
+    public void testConstructor1() {
         assertEquals(0, e.getPosX());
         assertEquals(0, e.getPosY());
         assertEquals(TextColor.ANSI.MAGENTA, e.getColor());
@@ -23,5 +27,18 @@ public class EnemyTest {
         assertEquals(0, e.getModel().y);
         assertEquals(1, e.getModel().width);
         assertEquals(1, e.getModel().height);
+    }
+
+    @Test
+    public void testConstructor2() {
+        TextColor.RGB color = new TextColor.RGB(255,0, 255);
+        assertEquals(0, e2.getPosX());
+        assertEquals(0, e2.getPosY());
+        assertEquals(color, e2.getColor());
+
+        assertEquals(0, e2.getModel().x);
+        assertEquals(0, e2.getModel().y);
+        assertEquals(1, e2.getModel().width);
+        assertEquals(1, e2.getModel().height);
     }
 }
