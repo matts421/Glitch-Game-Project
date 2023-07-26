@@ -1,0 +1,32 @@
+{
+    "ticks": 0,
+    "maxY": 22,
+    "maxX": 39,
+    "map": {
+        "barriers": [],
+        "name": "1",
+        "enemies": [],
+        "items": {},
+        "projectiles": []
+    },
+    "player": {
+        "airborne": false,
+        "mana": 5,
+        "name": "Warrior",
+        "health": 5,
+        "model": {
+            "width": 1,
+            "position": [
+                0,
+                21
+            ],
+            "height": 1
+        },
+        "position": [
+            0,
+            21
+        ],
+        "inventory": {},
+        "direction": 1
+    }
+}

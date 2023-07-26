@@ -403,4 +403,12 @@ public class Game implements Writable {
     public void setTickCount(int tickCount) {
         this.tickCount = tickCount;
     }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
 }

@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class JsonReaderTest {
+public class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderNonExistentFile() {
@@ -23,30 +22,41 @@ public class JsonReaderTest {
         }
     }
 
-//    @Test
-//    void testReaderEmptyWorkRoom() {
-//        JsonReader reader = new JsonReader("./data/testReaderEmptyWorkRoom.json");
-//        try {
-//            Game game = reader.read();
-//            assertEquals("My work room", game.getName());
-//            assertEquals(0, game.numThingies());
-//        } catch (IOException e) {
-//            fail("Couldn't read from file");
-//        }
-//    }
+    @Test
+    void testReaderEmptyGame() {
+        JsonReader reader = new JsonReader("./data/testReaderEmptyGame.json");
+        try {
+            Game game = reader.read();
 
-//    @Test
-//    void testReaderGeneralWorkRoom() {
-//        JsonReader reader = new JsonReader("./data/testReaderGeneralWorkRoom.json");
-//        try {
-//            WorkRoom wr = reader.read();
-//            assertEquals("My work room", wr.getName());
-//            List<Thingy> thingies = wr.getThingies();
-//            assertEquals(2, thingies.size());
-//            checkThingy("needle", Category.STITCHING, thingies.get(0));
-//            checkThingy("saw", Category.WOODWORK, thingies.get(1));
-//        } catch (IOException e) {
-//            fail("Couldn't read from file");
-//        }
-//    }
+            assertEquals(0, game.getTickCount());
+            assertEquals(22, game.getMaxY());
+            assertEquals(39, game.getMaxX());
+            assertEquals("1", game.getMap().getName());
+            assertTrue(game.getMap().getProjectiles().isEmpty());
+            assertTrue(game.getMap().getEnemies().isEmpty());
+            assertTrue(game.getMap().getBarriers().isEmpty());
+            assertTrue(game.getMap().getItems().getItems().isEmpty());
+
+        } catch (IOException e) {
+            fail("Couldn't read from file");
+        }
+    }
+
+    @Test
+    void testReaderGeneralGame() {
+        JsonReader reader = new JsonReader("./data/testReaderGeneralGame.json");
+        try {
+            Game game = reader.read();
+            assertEquals(48, game.getTickCount());
+            assertEquals(22, game.getMaxY());
+            assertEquals(39, game.getMaxX());
+            checkMap(game.getMap(), game.buildMapThree());
+            checkPlayer(game.getPlayer(), "Mage", 5, 0);
+            checkInventory(game.getPlayer().getInventory(), "coin", 56);
+            assertTrue(game.getMap().getItems().getItems().isEmpty());
+
+        } catch (IOException e) {
+            fail("Couldn't read from file");
+        }
+    }
 }
