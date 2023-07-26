@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.fail;
 
+// **NOTE** this class was inspired by Dr. Paul Carter's JsonSerializationDemo and it takes elements from
+//          JsonWriterTest
 public class JsonWriterTest extends JsonTest {
     Game game;
     Warrior w;

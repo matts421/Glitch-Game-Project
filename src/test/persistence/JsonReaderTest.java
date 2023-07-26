@@ -11,6 +11,8 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// **NOTE** this class was inspired by Dr. Paul Carter's JsonSerializationDemo and it takes elements from
+//          JsonReaderTest
 public class JsonReaderTest extends JsonTest {
 
     @Test
