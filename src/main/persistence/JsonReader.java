@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+// Represents a reader that reads workroom from JSON data stored in file
+// **NOTE**: Many methods from this class were exactly reproduced from Dr. Paul Carter's JsonSerializationDemo
 public class JsonReader {
 
     private String source;
@@ -58,10 +60,10 @@ public class JsonReader {
             gc = parseRanger(playerJson);
         }
 
-        Game game = new Game(maxX, maxY, tickCount, gc, parseMap(jsonObject.getJSONObject("map")));
-        return game;
+        return new Game(maxX, maxY, tickCount, gc, parseMap(jsonObject.getJSONObject("map")));
     }
 
+    // EFFECTS: parses GameMap from JSON object and returns it
     private GameMap parseMap(JSONObject json) {
         ArrayList<Enemy> enemyList = new ArrayList<>();
         ArrayList<Projectile> projectileList = new ArrayList<>();
@@ -93,6 +95,7 @@ public class JsonReader {
         return new GameMap(barrierList, items, enemyList, projectileList, json.getString("name"));
     }
 
+    // EFFECTS: parses Projectile from JSON object and returns it
     private Projectile parseProjectile(JSONObject jsonObject) {
         TextColor.RGB color = parseColor(jsonObject.getJSONObject("color"));
         int direction = jsonObject.getInt("direction");
@@ -103,6 +106,7 @@ public class JsonReader {
         return new Projectile(posX, posY, direction, color, model);
     }
 
+    // EFFECTS: parses Enemy from JSON object and returns it
     private Enemy parseEnemy(JSONObject jsonObject) {
         int posX = jsonObject.getJSONArray("position").getInt(0);
         int posY = jsonObject.getJSONArray("position").getInt(1);
@@ -111,6 +115,7 @@ public class JsonReader {
         return new Enemy(posX, posY, model);
     }
 
+    // EFFECTS: parses Warrior from JSON object and returns it
     private Warrior parseWarrior(JSONObject json) {
         int health = json.getInt("health");
         int mana = json.getInt("mana");
@@ -124,6 +129,7 @@ public class JsonReader {
         return new Warrior(health, mana, direction, airborne, posX, posY, inventory, model);
     }
 
+    // EFFECTS: parses Mage from JSON object and returns it
     private Mage parseMage(JSONObject json) {
         int health = json.getInt("health");
         int mana = json.getInt("mana");
@@ -137,6 +143,7 @@ public class JsonReader {
         return new Mage(health, mana, direction, airborne, posX, posY, inventory, model);
     }
 
+    // EFFECTS: parses Ranger from JSON object and returns it
     private Ranger parseRanger(JSONObject json) {
         int health = json.getInt("health");
         int mana = json.getInt("mana");
@@ -150,6 +157,7 @@ public class JsonReader {
         return new Ranger(health, mana, direction, airborne, posX, posY, inventory, model);
     }
 
+    // EFFECTS: parses a model (rectangle) from JSON object and returns it
     private Rectangle parseModel(JSONObject json) {
         int x = json.getJSONArray("position").getInt(0);
         int y = json.getJSONArray("position").getInt(1);
@@ -158,6 +166,7 @@ public class JsonReader {
         return new Rectangle(x, y, width, height);
     }
 
+    // EFFECTS: parses Inventory from JSON object and returns it
     private Inventory parseInventory(JSONObject json) {
         Inventory inventory = new Inventory();
         for (String itemName: json.keySet()) {
@@ -171,6 +180,7 @@ public class JsonReader {
         return inventory;
     }
 
+    // EFFECTS: parses Item from JSON object and returns it
     private Item parseItem(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         int x = jsonObject.getJSONArray("position").getInt(0);
@@ -180,6 +190,7 @@ public class JsonReader {
         return new Item(name, color, x, y, model);
     }
 
+    // EFFECTS: parses color from JSON object and returns it
     private TextColor.RGB parseColor(JSONObject jsonObject) {
         int red = jsonObject.getInt("red");
         int green = jsonObject.getInt("green");

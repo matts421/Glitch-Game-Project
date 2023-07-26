@@ -51,17 +51,6 @@ public class Inventory implements Writable {
         }
     }
 
-//    // EFFECTS: returns number of times item with name itemName appears in inventory.
-//    public int getQuantity(String itemName) {
-//        int totalQuantity = 0;
-//        for (Item item: items.keySet()) {
-//            if (item.getName().equals(itemName)) {
-//                totalQuantity += items.get(item);
-//            }
-//        }
-//        return totalQuantity;
-//    }
-
     public Set<Item> getItems() {
         return items.keySet();
     }

@@ -94,6 +94,7 @@ public class GameMap extends HasModel implements Writable {
         return json;
     }
 
+    // EFFECTS: helper function to convert a list of projectiles to a JSONArray
     private JSONArray projectilesToJson() {
         JSONArray json = new JSONArray();
         for (Projectile projectile: projectiles) {
@@ -102,6 +103,7 @@ public class GameMap extends HasModel implements Writable {
         return json;
     }
 
+    // EFFECTS: helper function to convert a list of enemies to a JSONArray
     private JSONArray enemiesToJson() {
         JSONArray json = new JSONArray();
         for (Enemy enemy: enemies) {

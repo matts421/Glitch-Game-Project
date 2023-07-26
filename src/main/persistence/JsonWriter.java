@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-// Represents a writer that writes JSON representation of game to file
+// Represents a writer that writes JSON representation of game to file.
+// **NOTE**: This class was exactly reproduced from Dr. Paul Carter's JsonSerializationDemo
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
