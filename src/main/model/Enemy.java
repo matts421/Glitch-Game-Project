@@ -23,7 +23,7 @@ public class Enemy extends HasModel implements Writable {
         posX = x;
         posY = y;
         color = TextColor.ANSI.MAGENTA;
-        model = new Rectangle(posX, posY, 1, 1);
+        model = new Rectangle(posX, posY, Game.UP_SCALE, Game.UP_SCALE);
     }
 
     // EFFECTS: creates new enemy with x-position x, y-position y,

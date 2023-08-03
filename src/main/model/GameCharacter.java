@@ -12,8 +12,9 @@ import java.awt.*;
  */
 public class GameCharacter extends HasModel implements Writable {
     public static final int MANA_COST = 1;
-    public static final int START_X = 0;
-    public static final int START_Y = 21;
+    public static final int START_X = 0 * Game.UP_SCALE;
+//    public static final int START_Y = 21 * Game.UP_SCALE - Game.UP_SCALE;
+    public static final int START_Y = 19 * Game.UP_SCALE;
     private TextColor color;
     private int health;
     private int mana;
@@ -57,7 +58,7 @@ public class GameCharacter extends HasModel implements Writable {
     // MODIFIES: this
     // EFFECTS: changes posX by amount of this.direction and updates model to new posX.
     public void run() {
-        posX += direction;
+        posX += (direction * Game.UP_SCALE);
         model.x = posX;
     }
 
@@ -74,7 +75,7 @@ public class GameCharacter extends HasModel implements Writable {
     //          and sets airborne to true. Otherwise, do nothing.
     public void jump(int height) {
         if (!airborne) {
-            posY -= height;
+            posY -= (height * Game.UP_SCALE);
             model.y = posY;
             airborne = true;
         }

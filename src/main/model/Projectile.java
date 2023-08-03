@@ -27,7 +27,7 @@ public class Projectile extends HasModel implements Writable {
         posX = player.getPosX();
         posY = player.getPosY();
         direction = player.getDirection();
-        model = new Rectangle(posX, posY, 1, 1);
+        model = new Rectangle(posX, posY, Game.UP_SCALE, Game.UP_SCALE);
     }
 
     // EFFECTS: creates new projectile with position, direction, and color equivalent to

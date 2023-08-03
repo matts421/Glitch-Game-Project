@@ -24,7 +24,7 @@ public class Item extends HasModel implements Writable {
         this.color = color;
         posX = x;
         posY = y;
-        model = new Rectangle(x, y, 1, 1);
+        model = new Rectangle(x, y, Game.UP_SCALE, Game.UP_SCALE);
     }
 
     // EFFECTS: creates item with name, color, x-position, y-position, and model.
@@ -74,6 +74,8 @@ public class Item extends HasModel implements Writable {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+
 
     @Override
     public JSONObject toJson() {
