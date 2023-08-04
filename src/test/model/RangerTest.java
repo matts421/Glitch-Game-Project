@@ -25,14 +25,14 @@ public class RangerTest {
         assertEquals(5, r.getMana());
         assertEquals(TextColor.ANSI.YELLOW, r.getColor());
         assertEquals(1, r.getDirection());
-        assertEquals(0, r.getPosX());
-        assertEquals(21, r.getPosY());
+        assertEquals(GameCharacter.START_X, r.getPosX());
+        assertEquals(GameCharacter.START_Y, r.getPosY());
 
         assertTrue(r.getInventory().getItems().isEmpty());
         assertEquals(1, r.getModel().width);
         assertEquals(1, r.getModel().height);
-        assertEquals(0, r.getModel().x);
-        assertEquals(21, r.getModel().y);
+        assertEquals(GameCharacter.START_X, r.getModel().x);
+        assertEquals(GameCharacter.START_Y, r.getModel().y);
     }
 
     @Test

@@ -25,14 +25,14 @@ public class MageTest {
         assertEquals(5, m.getMana());
         assertEquals(TextColor.ANSI.CYAN, m.getColor());
         assertEquals(1, m.getDirection());
-        assertEquals(0, m.getPosX());
-        assertEquals(21, m.getPosY());
+        assertEquals(GameCharacter.START_X, m.getPosX());
+        assertEquals(GameCharacter.START_Y, m.getPosY());
 
         assertTrue(m.getInventory().getItems().isEmpty());
         assertEquals(1, m.getModel().width);
         assertEquals(1, m.getModel().height);
-        assertEquals(0, m.getModel().x);
-        assertEquals(21, m.getModel().y);
+        assertEquals(GameCharacter.START_X, m.getModel().x);
+        assertEquals(GameCharacter.START_Y, m.getModel().y);
     }
 
     @Test

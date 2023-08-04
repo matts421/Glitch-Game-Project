@@ -23,7 +23,6 @@ public class GameCharacter extends HasModel implements Writable {
     private int posY;
     private Rectangle model;
     private boolean airborne;
-
     private Inventory inventory;
 
     // EFFECTS: creates character with given health, mana, and color.
@@ -75,7 +74,7 @@ public class GameCharacter extends HasModel implements Writable {
     //          and sets airborne to true. Otherwise, do nothing.
     public void jump(int height) {
         if (!airborne) {
-            posY -= (height * Game.UP_SCALE);
+            posY -= height;
             model.y = posY;
             airborne = true;
         }

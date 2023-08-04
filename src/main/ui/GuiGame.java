@@ -29,6 +29,7 @@ public class GuiGame extends JFrame {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private GamePanel gp;
+    private ScorePanel sp;
 
     //39 X 22;
     public GuiGame() {
@@ -51,9 +52,9 @@ public class GuiGame extends JFrame {
 
 
         gp = new GamePanel(game);
-//        sp = new ScorePanel(game);
+        sp = new ScorePanel(game);
         add(gp);
-//        add(sp, BorderLayout.NORTH);
+        add(sp, BorderLayout.NORTH);
         addKeyListener(new KeyHandler());
         pack();
         setVisible(true);
@@ -69,6 +70,7 @@ public class GuiGame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 tick();
+                sp.update();
                 gp.repaint();
             }
         });
@@ -86,7 +88,7 @@ public class GuiGame extends JFrame {
         if (game.isLevelOver()) {
             GameMap newMap = game.getNextMap();
             game.getPlayer().setPosX(0 * Game.UP_SCALE);
-            game.getPlayer().setPosY(21 * Game.UP_SCALE);
+            game.getPlayer().setPosY(19 * Game.UP_SCALE);
             game.getPlayer().updateModel();
             game.setLevelOver(false);
             game.setMap(newMap);
@@ -114,7 +116,7 @@ public class GuiGame extends JFrame {
             game.cycleCharacterClass();
         } else if (keyCode == KeyEvent.VK_F2) {
             saveGame();
-        } else if (keyCode == KeyEvent.VK_F3) {
+        } else if (keyCode == KeyEvent.VK_E) {
             loadGame();
         }
     }

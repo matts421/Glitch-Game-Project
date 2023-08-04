@@ -14,13 +14,13 @@ import java.util.Random;
 
 public class Game implements Writable {
     public static final int TICKS_PER_SECOND = 10;
-    public static final int JUMP_HEIGHT = 5;
+    public static final int UP_SCALE = 30;
+    public static final int JUMP_HEIGHT = 5 * UP_SCALE;
     public static final int GRAVITY = 1;
-    public static final int  MANA_TICKS = 50;
+    public static final int  MANA_TICKS = 500;
     public static final int  MANA_BACK = 1;
     public static final int HEIGHT = 660;
     public static final int WIDTH = 1170;
-    public static final int UP_SCALE = 30;
     private boolean levelOver;
     private int tickCount;
     private boolean ended;
@@ -85,6 +85,7 @@ public class Game implements Writable {
     private void handlePlayerCollisions() {
         if (!onPlatform()) {
             player.fall();
+            player.setAirborne(true);
         } else {
             player.setAirborne(false);
         }
@@ -115,25 +116,18 @@ public class Game implements Writable {
         int currentY = player.getPosY();
         boolean currentAirborne = player.isAirborne();
         Inventory currentInventory = player.getInventory();
-        Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, Game.UP_SCALE, Game.UP_SCALE);
+        Rectangle model = player.getModel();
 
         if (player.getColor() == TextColor.ANSI.RED) {
-            player = new Mage(Mage.MAX_HEALTH, Mage.MAX_MANA, 1, false,
-                    GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+            player = new Mage(currentHealth, currentMana, 1, currentAirborne,
+                    currentX, currentY, currentInventory, model);
         } else if (player.getColor() == TextColor.ANSI.CYAN) {
-            player = new Ranger(Ranger.MAX_HEALTH, Ranger.MAX_MANA, 1, false,
-                    GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+            player = new Ranger(currentHealth, currentMana, 1, currentAirborne,
+                    currentX, currentY, currentInventory, model);
         } else {
-            player = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
-                    GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+            player = new Warrior(currentHealth, currentMana, 1, currentAirborne,
+                    currentX, currentY, currentInventory, model);
         }
-
-        player.setMana(currentMana);
-        player.setHealth(currentHealth);
-        player.setInventory(currentInventory);
-        player.setAirborne(currentAirborne);
-        player.setPosX(currentX);
-        player.setPosY(currentY);
     }
 
     // EFFECTS: returns true if player is on a platform, false otherwise.
@@ -141,7 +135,7 @@ public class Game implements Writable {
         for (Rectangle barrier : map.getBarriers()) {
             if (barrier.y == (player.getPosY() + player.getModel().height) + 1
                     && barrier.x <= player.getPosX()
-                    && (barrier.x + barrier.width) > (player.getPosX() + player.getModel().width)) {
+                    && (barrier.x + barrier.width) > player.getPosX()) {
                 return true;
             }
         }
@@ -203,10 +197,10 @@ public class Game implements Writable {
     public int closestAbovePlatform() {
         int bestDist = -1;
         for (Rectangle barrier : map.getBarriers()) {
-            if ((barrier.y + barrier.height) < player.getPosY()
+            if ((barrier.y + barrier.height - 1) < player.getPosY()
                     && barrier.x <= player.getPosX()
-                    && (barrier.x + barrier.width) > (player.getPosX() + player.getModel().width)) {
-                int currentDist = (player.getPosY() - barrier.y - barrier.height - 1);
+                    && (barrier.x + barrier.width) > player.getPosX()) {
+                int currentDist = (player.getPosY() - barrier.y - barrier.height);
                 if (bestDist == -1 || currentDist < bestDist) {
                     bestDist = currentDist;
                 }
@@ -334,28 +328,72 @@ public class Game implements Writable {
 //        return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "2");
 //    }
 
+    private ArrayList<Rectangle> createMapBarriers() {
+        ArrayList<Rectangle> barriers = new ArrayList<>();
+        barriers.add(new Rectangle(0, 3 * Game.UP_SCALE, 10 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(6 * Game.UP_SCALE, 10 * Game.UP_SCALE,
+                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(10 * Game.UP_SCALE, 19 * Game.UP_SCALE,
+                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(16 * Game.UP_SCALE, 19 * Game.UP_SCALE,
+                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(19 * Game.UP_SCALE, 16 * Game.UP_SCALE,
+                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(16 * Game.UP_SCALE, 13 * Game.UP_SCALE,
+                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(21 * Game.UP_SCALE, 11 * Game.UP_SCALE,
+                15 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(29 * Game.UP_SCALE, 8 * Game.UP_SCALE,
+                4 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(23 * Game.UP_SCALE, 5 * Game.UP_SCALE,
+                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(12 * Game.UP_SCALE, 4 * Game.UP_SCALE,
+                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        return barriers;
+    }
+
+    // EFFECTS: create and return the first level stage's map
+    public GameMap buildMapOne() {
+        ArrayList<Rectangle> barriers = createMapBarriers();
+        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
+        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
+        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE);
+
+        ArrayList<Enemy> enemies = new ArrayList<>();
+        enemies.add(enemy1);
+        enemies.add(enemy2);
+        enemies.add(enemy4);
+
+
+        barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(15 * Game.UP_SCALE, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+
+        return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "1");
+    }
+
+    // EFFECTS: create and return the second level stage's map
+    public GameMap buildMapTwo() {
+        ArrayList<Rectangle> barriers = createMapBarriers();
+
+        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
+        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
+        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE);
+
+        ArrayList<Enemy> enemies = new ArrayList<>();
+        enemies.add(enemy1);
+        enemies.add(enemy2);
+        enemies.add(enemy4);
+
+
+        barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(15 * Game.UP_SCALE, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+
+        return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "2");
+    }
+
     // EFFECTS: create and return the third level stage's map
     public GameMap buildMapThree() {
-        ArrayList<Rectangle> barriers = new ArrayList<>();
-        barriers.add(new Rectangle(0, 3 * Game.UP_SCALE, 10 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(6 * Game.UP_SCALE, 10 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(10 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(16 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(19 * Game.UP_SCALE, 16 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(16 * Game.UP_SCALE, 13 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(21 * Game.UP_SCALE, 11 * Game.UP_SCALE,
-                15 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(29 * Game.UP_SCALE, 8 * Game.UP_SCALE,
-                4 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(23 * Game.UP_SCALE, 5 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(12 * Game.UP_SCALE, 4 * Game.UP_SCALE,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        ArrayList<Rectangle> barriers = createMapBarriers();
 
         Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
         Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
@@ -368,85 +406,7 @@ public class Game implements Writable {
 
 
         barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(15, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-
-        return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "3");
-    }
-
-    // EFFECTS: create and return the third level stage's map
-    public GameMap buildMapOne() {
-        ArrayList<Rectangle> barriers = new ArrayList<>();
-        barriers.add(new Rectangle(0, 3 * Game.UP_SCALE, 10 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(6 * Game.UP_SCALE, 10 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(10 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(16 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(19 * Game.UP_SCALE, 16 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(16 * Game.UP_SCALE, 13 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(21 * Game.UP_SCALE, 11 * Game.UP_SCALE,
-                15 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(29 * Game.UP_SCALE, 8 * Game.UP_SCALE,
-                4 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(23 * Game.UP_SCALE, 5 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(12 * Game.UP_SCALE, 4 * Game.UP_SCALE,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-
-        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
-        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
-        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE);
-
-        ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(enemy1);
-        enemies.add(enemy2);
-        enemies.add(enemy4);
-
-
-        barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(15, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-
-        return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "3");
-    }
-
-    // EFFECTS: create and return the third level stage's map
-    public GameMap buildMapTwo() {
-        ArrayList<Rectangle> barriers = new ArrayList<>();
-        barriers.add(new Rectangle(0, 3 * Game.UP_SCALE, 10 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(6 * Game.UP_SCALE, 10 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(10 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(16 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(19 * Game.UP_SCALE, 16 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(16 * Game.UP_SCALE, 13 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(21 * Game.UP_SCALE, 11 * Game.UP_SCALE,
-                15 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(29 * Game.UP_SCALE, 8 * Game.UP_SCALE,
-                4 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(23 * Game.UP_SCALE, 5 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(12 * Game.UP_SCALE, 4 * Game.UP_SCALE,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-
-        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
-        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
-        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE);
-
-        ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(enemy1);
-        enemies.add(enemy2);
-        enemies.add(enemy4);
-
-
-        barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(15, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(15 * Game.UP_SCALE, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "3");
     }

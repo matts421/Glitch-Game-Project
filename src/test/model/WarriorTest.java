@@ -25,14 +25,14 @@ public class WarriorTest {
         assertEquals(5, w.getMana());
         assertEquals(TextColor.ANSI.RED, w.getColor());
         assertEquals(1, w.getDirection());
-        assertEquals(0, w.getPosX());
-        assertEquals(21, w.getPosY());
+        assertEquals(GameCharacter.START_X, w.getPosX());
+        assertEquals(GameCharacter.START_Y, w.getPosY());
 
         assertTrue(w.getInventory().getItems().isEmpty());
         assertEquals(1, w.getModel().width);
         assertEquals(1, w.getModel().height);
-        assertEquals(0, w.getModel().x);
-        assertEquals(21, w.getModel().y);
+        assertEquals(GameCharacter.START_X, w.getModel().x);
+        assertEquals(GameCharacter.START_Y, w.getModel().y);
     }
 
     @Test

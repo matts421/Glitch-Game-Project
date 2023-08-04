@@ -26,14 +26,14 @@ public class GameCharacterTest {
         assertEquals(0, gc.getMana());
         assertEquals(TextColor.ANSI.WHITE, gc.getColor());
         assertEquals(1, gc.getDirection());
-        assertEquals(0, gc.getPosX());
-        assertEquals(21, gc.getPosY());
+        assertEquals(GameCharacter.START_X, gc.getPosX());
+        assertEquals(GameCharacter.START_Y, gc.getPosY());
 
         assertTrue(gc.getInventory().getItems().isEmpty());
         assertEquals(1, gc.getModel().width);
         assertEquals(1, gc.getModel().height);
-        assertEquals(0, gc.getModel().x);
-        assertEquals(21, gc.getModel().y);
+        assertEquals(GameCharacter.START_X, gc.getModel().x);
+        assertEquals(GameCharacter.START_Y, gc.getModel().y);
     }
 
     @Test
@@ -80,8 +80,8 @@ public class GameCharacterTest {
     public void testRunNoArgumentsRight() {
         gc.run();
 
-        assertEquals(1, gc.getPosX());
-        assertEquals(1, gc.getModel().x);
+        assertEquals(1*Game.UP_SCALE, gc.getPosX());
+        assertEquals(1*Game.UP_SCALE, gc.getModel().x);
     }
 
     @Test
@@ -89,8 +89,8 @@ public class GameCharacterTest {
         gc.setDirection(-1);
         gc.run();
 
-        assertEquals(-1, gc.getPosX());
-        assertEquals(-1, gc.getModel().x);
+        assertEquals(-1 * Game.UP_SCALE, gc.getPosX());
+        assertEquals(-1 * Game.UP_SCALE, gc.getModel().x);
     }
 
     @Test

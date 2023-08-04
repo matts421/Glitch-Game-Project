@@ -37,8 +37,8 @@ public class ProjectileTest {
 
         assertEquals(0, projectile.getModel().x);
         assertEquals(0, projectile.getModel().y);
-        assertEquals(1, projectile.getModel().width);
-        assertEquals(1, projectile.getModel().height);
+        assertEquals(Game.UP_SCALE, projectile.getModel().width);
+        assertEquals(Game.UP_SCALE, projectile.getModel().height);
     }
 
     @Test

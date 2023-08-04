@@ -32,7 +32,7 @@ public class GameTest {
         inventory = new Inventory();
         projectiles = new ArrayList<>();
         map = new GameMap(barriers, inventory, enemies, projectiles, "test");
-        game = new Game(100, 100, 0, gc, map);
+        game = new Game(100 * Game.UP_SCALE, 100 * Game.UP_SCALE, 0, gc, map);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class GameTest {
     @Test
     public void testTickEndedXTooBig() {
         gc.setHealth(100);
-        gc.setPosX(101);
+        gc.setPosX(101 * Game.UP_SCALE);
         game.tick();
         assertTrue(game.isEnded());
     }
@@ -88,7 +88,7 @@ public class GameTest {
     @Test
     public void testTickEndedYTooBig() {
         gc.setHealth(100);
-        gc.setPosY(101);
+        gc.setPosY(101 * Game.UP_SCALE);
         game.tick();
         assertTrue(game.isEnded());
     }
@@ -127,29 +127,32 @@ public class GameTest {
 
     @Test
     public void testOnPlatform() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + 1, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + gc.getModel().height + 1, 1, 1);
         map.getBarriers().add(barrier);
         assertTrue(game.onPlatform());
     }
 
     @Test
     public void testOnMiddlePlatform() {
-        Rectangle barrier = new Rectangle(gc.getPosX() - 2, gc.getPosY() + 1, 10, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX() - 2, gc.getPosY() + gc.getModel().height + 1,
+                10 + gc.getModel().width, 1);
         map.getBarriers().add(barrier);
         assertTrue(game.onPlatform());
     }
 
     @Test
     public void testNotOnPlatformButAbove() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + 2, 10, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + gc.getModel().height + 2, 10, 1);
         map.getBarriers().add(barrier);
         assertFalse(game.onPlatform());
     }
 
     @Test
     public void testOnPlatformButNotFirst() {
-        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() + 10, 10, 1);
-        Rectangle barrier2 = new Rectangle(gc.getPosX(), gc.getPosY() + 1, 10, 1);
+        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() + gc.getModel().height + 10,
+                10, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX(), gc.getPosY() + gc.getModel().height + 1,
+                10, 1);
         map.getBarriers().add(barrier1);
         map.getBarriers().add(barrier2);
         assertTrue(game.onPlatform());
@@ -174,12 +177,12 @@ public class GameTest {
     @Test
     public void testTickPlayerNotOnPlatform() {
         game.tick();
-        assertEquals(22, gc.getPosY());
+        assertEquals(GameCharacter.START_Y + 1, gc.getPosY());
     }
 
     @Test
     public void testTickPlayerOnPlatform() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + 1, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + gc.getModel().height + 1, 1, 1);
         map.getBarriers().add(barrier);
         game.tick();
         assertFalse(gc.isAirborne());
@@ -190,7 +193,7 @@ public class GameTest {
         Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY(), 1, 2);
         map.getBarriers().add(barrier);
         game.tick();
-        assertEquals(-1, gc.getPosX());
+        assertEquals(-1 * Game.UP_SCALE, gc.getPosX());
     }
 
     @Test
@@ -198,19 +201,15 @@ public class GameTest {
         gc.setPosX(0);
         gc.setPosY(0);
         gc.updateModel();
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + 1, 1, 1);
-        map.getBarriers().add(barrier);
         game.tick();
 
-        assertEquals(-2, gc.getPosX());
+        assertEquals(-2 * Game.UP_SCALE, gc.getPosX());
         assertEquals(4, gc.getHealth());
     }
 
     @Test
     public void testTickPlayerItemCollision() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + 1, 1, 1);
         Item item = new Item("test", TextColor.ANSI.WHITE, gc.getPosX(), gc.getPosY());
-        map.getBarriers().add(barrier);
         map.getItems().addItem(item, 1);
         game.tick();
 
@@ -262,7 +261,7 @@ public class GameTest {
 
     @Test
     public void testClosestAbovePlatformAbove() {
-        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() -1, 1, 1);
+        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() - 1, gc.getModel().width, 1);
         map.getBarriers().add(barrier1);
 
         assertEquals(0, game.closestAbovePlatform());
@@ -270,8 +269,10 @@ public class GameTest {
 
     @Test
     public void testClosestAbovePlatformNotFirst() {
-        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() - 10, 1, 1);
-        Rectangle barrier2 = new Rectangle(gc.getPosX(), gc.getPosY() - 3, 1, 1);
+        Rectangle barrier1 = new Rectangle(gc.getPosX(), gc.getPosY() - 10,
+                1, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX(), gc.getPosY() - 3,
+                1, 1);
         map.getBarriers().add(barrier1);
         map.getBarriers().add(barrier2);
 
@@ -280,8 +281,10 @@ public class GameTest {
 
     @Test
     public void testClosestAbovePlatformInMiddle() {
-        Rectangle barrier1 = new Rectangle(gc.getPosX() - 3, gc.getPosY() - 10, 10, 1);
-        Rectangle barrier2 = new Rectangle(gc.getPosX() - 4, gc.getPosY() - 3, 15, 1);
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 3, gc.getPosY() - 10,
+                10 + gc.getModel().width, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX() - 4, gc.getPosY() - 3,
+                15 + gc.getModel().width, 1);
         map.getBarriers().add(barrier1);
         map.getBarriers().add(barrier2);
 
@@ -290,8 +293,10 @@ public class GameTest {
 
     @Test
     public void testClosestAbovePlatformLowerNotInRange() {
-        Rectangle barrier1 = new Rectangle(gc.getPosX() - 3, gc.getPosY() - 10, 10, 1);
-        Rectangle barrier2 = new Rectangle(gc.getPosX() + 1, gc.getPosY() - 3, 15, 1);
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 3, gc.getPosY() - 10,
+                10 + gc.getModel().width, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX() + 1, gc.getPosY() - 3,
+                15 + gc.getModel().width, 1);
         map.getBarriers().add(barrier1);
         map.getBarriers().add(barrier2);
 
@@ -305,45 +310,52 @@ public class GameTest {
 
     @Test
     public void testMaxJumpPlatformWayAbove() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 20, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 20 * Game.UP_SCALE,
+                1, 1);
         map.getBarriers().add(barrier);
         assertEquals(Game.JUMP_HEIGHT, game.maxJump());
     }
 
     @Test
     public void testMaxJumpPlatform1Above() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 1, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 1,
+                1, 1);
         map.getBarriers().add(barrier);
         assertEquals(0, game.maxJump());
     }
 
     @Test
     public void testMaxJumpPlatform2Above() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 2, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 2,
+                1, 1);
         map.getBarriers().add(barrier);
         assertEquals(1, game.maxJump());
     }
 
     @Test
     public void testMaxJumpPlatform3Above() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 3, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 3,
+                1, 1);
         map.getBarriers().add(barrier);
         assertEquals(2, game.maxJump());
     }
 
     @Test
     public void testMaxJumpPlatform4Above() {
-        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 4, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() - 4,
+                1, 1);
         map.getBarriers().add(barrier);
         assertEquals(3, game.maxJump());
     }
 
     @Test
     public void testMaxJumpPlatform4AboveMiddle() {
-        Rectangle barrier1 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 5, 10, 1);
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 5,
+                10, 1);
         map.getBarriers().add(barrier1);
 
-        Rectangle barrier2 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 4, 10, 1);
+        Rectangle barrier2 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 4,
+                10, 1);
         map.getBarriers().add(barrier2);
 
         assertEquals(3, game.maxJump());
@@ -359,7 +371,8 @@ public class GameTest {
 
     @Test
     public void testMaxJumpPlatformCurrentDistSameAsBestDist() {
-        Rectangle barrier1 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 4, 10, 1);
+        Rectangle barrier1 = new Rectangle(gc.getPosX() - 2, gc.getPosY() - 4,
+                10, 1);
         map.getBarriers().add(barrier1);
         map.getBarriers().add(barrier1);
 
@@ -380,7 +393,8 @@ public class GameTest {
 
     @Test
     public void testTickProjectileMissWall() {
-        Rectangle barrier = new Rectangle(gc.getPosX() + 1, gc.getPosY() + 1, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX() + 1 * Game.UP_SCALE,
+                gc.getPosY() + 1 * Game.UP_SCALE, 1, 1);
         Projectile p1 = new Projectile(gc);
         map.getBarriers().add(barrier);
         map.getProjectiles().add(p1);
@@ -411,7 +425,7 @@ public class GameTest {
 
         assertEquals("1", map1.getName());
         assertEquals(12, map1.getBarriers().size());
-        assertEquals(2, map1.getEnemies().size());
+        assertEquals(3, map1.getEnemies().size());
         assertTrue(map1.getProjectiles().isEmpty());
         assertTrue(map1.getItems().getItems().isEmpty());
     }
@@ -457,8 +471,8 @@ public class GameTest {
     @Test
     public void testToJson() {
         JSONObject jsonObject = game.toJson();
-        assertEquals(100, jsonObject.getInt("maxX"));
-        assertEquals(100, jsonObject.getInt("maxY"));
+        assertEquals(100 * Game.UP_SCALE, jsonObject.getInt("maxX"));
+        assertEquals(100 * Game.UP_SCALE, jsonObject.getInt("maxY"));
         assertEquals(0, jsonObject.getInt("ticks"));
         assertFalse(jsonObject.getJSONObject("player").isEmpty());
         assertFalse(jsonObject.getJSONObject("map").isEmpty());

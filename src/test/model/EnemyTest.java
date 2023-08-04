@@ -27,8 +27,8 @@ public class EnemyTest {
 
         assertEquals(0, e.getModel().x);
         assertEquals(0, e.getModel().y);
-        assertEquals(1, e.getModel().width);
-        assertEquals(1, e.getModel().height);
+        assertEquals(Game.UP_SCALE, e.getModel().width);
+        assertEquals(Game.UP_SCALE, e.getModel().height);
     }
 
     @Test

@@ -28,8 +28,8 @@ public class ItemTest {
 
         assertEquals(0, item.getModel().x);
         assertEquals(0, item.getModel().y);
-        assertEquals(1, item.getModel().width);
-        assertEquals(1, item.getModel().height);
+        assertEquals(Game.UP_SCALE, item.getModel().width);
+        assertEquals(Game.UP_SCALE, item.getModel().height);
     }
 
     @Test
