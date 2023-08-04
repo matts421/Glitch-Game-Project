@@ -50,8 +50,8 @@ public class ScorePanel extends JPanel {
     // effects:  updates number of invaders shot and number of missiles
     //           remaining to reflect current state of game
     public void update() {
-        healthLabel.setText("❤".repeat(game.getPlayer().getHealth()));
-        manaLabel.setText("★".repeat(game.getPlayer().getMana()));
+        healthLabel.setText("<3".repeat(game.getPlayer().getHealth()));
+        manaLabel.setText("*".repeat(game.getPlayer().getMana()));
         levelLabel.setText("Level: " + game.getMap().getName());
         classLabel.setText("Class: " + game.getPlayer().toString());
         classLabel.setForeground(game.getPlayer().getColor().toColor());
