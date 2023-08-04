@@ -365,8 +365,10 @@ public class Game implements Writable {
         enemies.add(enemy4);
 
 
-        barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(15 * Game.UP_SCALE, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(0, 21 * Game.UP_SCALE + 2,
+                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(15 * Game.UP_SCALE, 21 * Game.UP_SCALE + 2,
+                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "1");
     }
@@ -385,8 +387,10 @@ public class Game implements Writable {
         enemies.add(enemy4);
 
 
-        barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(15 * Game.UP_SCALE, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(0, 21 * Game.UP_SCALE + 2,
+                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(15 * Game.UP_SCALE, 21 * Game.UP_SCALE + 2,
+                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "2");
     }
@@ -405,8 +409,10 @@ public class Game implements Writable {
         enemies.add(enemy4);
 
 
-        barriers.add(new Rectangle(0, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
-        barriers.add(new Rectangle(15 * Game.UP_SCALE, maxY, 9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(0, 21 * Game.UP_SCALE + 2,
+                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(15 * Game.UP_SCALE, 21 * Game.UP_SCALE + 2,
+                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "3");
     }
