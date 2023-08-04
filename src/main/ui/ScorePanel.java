@@ -23,11 +23,11 @@ public class ScorePanel extends JPanel {
         game = g;
         setBackground(new Color(180, 180, 180));
 
-        healthLabel = new JLabel("❤".repeat(game.getPlayer().getHealth()));
+        healthLabel = new JLabel("<3".repeat(game.getPlayer().getHealth()));
         healthLabel.setPreferredSize(new Dimension(LBL_WIDTH, LBL_HEIGHT));
         healthLabel.setForeground(new Color(255, 0,0));
 
-        manaLabel = new JLabel("★".repeat(game.getPlayer().getMana()));
+        manaLabel = new JLabel("*".repeat(game.getPlayer().getMana()));
         manaLabel.setPreferredSize(new Dimension(LBL_WIDTH, LBL_HEIGHT));
         manaLabel.setForeground(new Color(0,0,255));
 
