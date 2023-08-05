@@ -154,7 +154,7 @@ public class Game implements Writable {
     public boolean onPlatform() {
         for (Rectangle barrier : map.getBarriers()) {
             if (barrier.y == (player.getPosY() + player.getModel().height) + 1
-                    && barrier.x <= player.getPosX()
+                    && barrier.x <= (player.getPosX() + player.getModel().width)
                     && (barrier.x + barrier.width) > player.getPosX()) {
                 return true;
             }

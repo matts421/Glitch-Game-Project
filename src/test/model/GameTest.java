@@ -142,6 +142,42 @@ public class GameTest {
     }
 
     @Test
+    public void testOnPlatformRightEdge() {
+        Rectangle model = new Rectangle(0,0,Game.UP_SCALE, Game.UP_SCALE);
+        gc = new GameCharacter(0,0,1,false,0,0,
+                new Inventory(),model, TextColor.ANSI.WHITE,100);
+        Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + gc.getModel().height + 1,
+                gc.getModel().width / 2, 1);
+        map.getBarriers().add(barrier);
+        game = new Game(100 * Game.UP_SCALE, 100 * Game.UP_SCALE, 0, gc, map);
+        assertTrue(game.onPlatform());
+    }
+
+    @Test
+    public void testOnPlatformLeftEdge() {
+        Rectangle model = new Rectangle(0,0,Game.UP_SCALE, Game.UP_SCALE);
+        gc = new GameCharacter(0,0,1,false,0,0,
+                new Inventory(),model, TextColor.ANSI.WHITE,100);
+        Rectangle barrier = new Rectangle(gc.getPosX() + gc.getModel().width / 2, gc.getPosY() + gc.getModel().height + 1,
+                gc.getModel().width / 2, 1);
+        map.getBarriers().add(barrier);
+        game = new Game(100 * Game.UP_SCALE, 100 * Game.UP_SCALE, 0, gc, map);
+        assertTrue(game.onPlatform());
+    }
+
+    @Test
+    public void testOnPlatformHangingOffBothSides() {
+        Rectangle model = new Rectangle(0,0,Game.UP_SCALE, Game.UP_SCALE);
+        gc = new GameCharacter(0,0,1,false,0,0,
+                new Inventory(),model, TextColor.ANSI.WHITE,100);
+        Rectangle barrier = new Rectangle(gc.getPosX() + gc.getModel().width / 2, gc.getPosY() + gc.getModel().height + 1,
+                1, 1);
+        map.getBarriers().add(barrier);
+        game = new Game(100 * Game.UP_SCALE, 100 * Game.UP_SCALE, 0, gc, map);
+        assertTrue(game.onPlatform());
+    }
+
+    @Test
     public void testOnPlatform() {
         Rectangle barrier = new Rectangle(gc.getPosX(), gc.getPosY() + gc.getModel().height + 1,
                 1 + gc.getModel().width, 1);

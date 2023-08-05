@@ -81,8 +81,8 @@ public class GameCharacterTest {
     public void testRunNoArgumentsRight() {
         gc.run();
 
-        assertEquals(1*Game.UP_SCALE, gc.getPosX());
-        assertEquals(1*Game.UP_SCALE, gc.getModel().x);
+        assertEquals(Game.UP_SCALE, gc.getPosX());
+        assertEquals(Game.UP_SCALE, gc.getModel().x);
     }
 
     @Test
@@ -227,6 +227,12 @@ public class GameCharacterTest {
     }
 
     @Test
+    public void testSetMaxMana() {
+        gc.setMaxMana(100);
+        assertEquals(100, gc.getMaxMana());
+    }
+
+    @Test
     public void testSetInventory() {
         Inventory testInventory = new Inventory();
         Item testItem = new Item("test", TextColor.ANSI.WHITE, 0, 0);
@@ -243,7 +249,7 @@ public class GameCharacterTest {
         assertEquals(0, jsonObject.getInt("health"));
         assertEquals(0, jsonObject.getInt("mana"));
         assertEquals(1, jsonObject.getInt("direction"));
-        assertEquals(false, jsonObject.getBoolean("airborne"));
+        assertFalse(jsonObject.getBoolean("airborne"));
     }
 
     @Test
@@ -278,27 +284,4 @@ public class GameCharacterTest {
         JSONObject jsonObject = r.toJson();
         assertEquals("Ranger", jsonObject.getString("name"));
     }
-
-    /*
-    JSONObject json = new JSONObject();
-        String name;
-
-        if (color == TextColor.ANSI.RED) {
-            name = "Warrior";
-        } else if (color == TextColor.ANSI.CYAN) {
-            name = "Mage";
-        } else {
-            name = "Ranger";
-        }
-
-        json.put("name", name);
-        json.put("health", health);
-        json.put("mana", mana);
-        json.put("direction", direction);
-        json.put("airborne", airborne);
-        json.put("inventory", inventory.toJson());
-        json.put("position", createPosition(posX, posY));
-        json.put("model", rectangleToJson(model));
-        return json;
-     */
 }
