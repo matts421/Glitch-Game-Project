@@ -150,12 +150,24 @@ public class Game implements Writable {
         }
     }
 
+//    // EFFECTS: returns true if player is on a platform, false otherwise.
+//    public boolean onPlatform() {
+//        for (Rectangle barrier : map.getBarriers()) {
+//            if (barrier.y == (player.getPosY() + player.getModel().height) + 1
+//                    && barrier.x <= (player.getPosX() + player.getModel().width)
+//                    && (barrier.x + barrier.width) > player.getPosX()) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
     // EFFECTS: returns true if player is on a platform, false otherwise.
     public boolean onPlatform() {
+        Rectangle collisionModel = new Rectangle(player.getPosX(), player.getPosY() + 1,
+                player.getModel().width, player.getModel().height);
         for (Rectangle barrier : map.getBarriers()) {
-            if (barrier.y == (player.getPosY() + player.getModel().height) + 1
-                    && barrier.x <= (player.getPosX() + player.getModel().width)
-                    && (barrier.x + barrier.width) > player.getPosX()) {
+            if (collisionModel.intersects(barrier)) {
                 return true;
             }
         }
@@ -320,9 +332,9 @@ public class Game implements Writable {
     // EFFECTS: create and return the first level stage's map
     public GameMap buildMapOne() {
         ArrayList<Rectangle> barriers = createMapBarriers();
-        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE - 1);
-        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE - 1);
-        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE - 1);
+        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
+        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
+        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE);
 
         ArrayList<Enemy> enemies = new ArrayList<>();
         enemies.add(enemy1);
@@ -342,9 +354,9 @@ public class Game implements Writable {
     public GameMap buildMapTwo() {
         ArrayList<Rectangle> barriers = createMapBarriers();
 
-        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE - 1);
-        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE - 1);
-        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE - 1);
+        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
+        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
+        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE);
 
         ArrayList<Enemy> enemies = new ArrayList<>();
         enemies.add(enemy1);
@@ -364,9 +376,9 @@ public class Game implements Writable {
     public GameMap buildMapThree() {
         ArrayList<Rectangle> barriers = createMapBarriers();
 
-        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE - 1);
-        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE - 1);
-        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE - 1);
+        Enemy enemy1 = new Enemy(11 * Game.UP_SCALE, 18 * Game.UP_SCALE);
+        Enemy enemy2 = new Enemy(3 * Game.UP_SCALE, 2 * Game.UP_SCALE);
+        Enemy enemy4 = new Enemy(15 * Game.UP_SCALE, 3 * Game.UP_SCALE);
 
         ArrayList<Enemy> enemies = new ArrayList<>();
         enemies.add(enemy1);
