@@ -12,12 +12,16 @@ public class InventoryPanel extends MainGamePanel {
     private JButton itemButton;
     private JButton healthButton;
     private JButton manaButton;
+    private ItemButtonListener ibl;
+    private PaymentButtonListener hbl;
+    private PaymentButtonListener mbl;
 
     public InventoryPanel(Game g) {
         super(g);
         createItemButton();
         createHealthButton();
         createManaButton();
+        addButtons();
     }
 
     @Override
@@ -39,6 +43,19 @@ public class InventoryPanel extends MainGamePanel {
         enableProperButtons();
         setButtonLocations();
         drawInventory(g);
+    }
+
+    @Override
+    public void updateButtonListeners() {
+        ibl.setGame(game);
+        hbl.setGame(game);
+        mbl.setGame(game);
+    }
+
+    private void addButtons() {
+        add(itemButton);
+        add(healthButton);
+        add(manaButton);
     }
 
     private void setButtonLocations() {
@@ -75,21 +92,23 @@ public class InventoryPanel extends MainGamePanel {
 
     private void createItemButton() {
         itemButton = new JButton("Drop item");
-        itemButton.addActionListener(new ItemButtonListener(game,
-                new Item("coin", TextColor.ANSI.GREEN, 0, 0)));
+        ibl = new ItemButtonListener(game, new Item("coin", TextColor.ANSI.GREEN, 0,0));
+        itemButton.addActionListener(ibl);
         itemButton.setSize(120, 30);
         itemButton.setFocusable(false);
     }
 
     private void createHealthButton() {
         healthButton = new JButton("Buy health [100 coins]");
-        healthButton.addActionListener(new PaymentButtonListener(game, 100, "health"));
+        hbl = new PaymentButtonListener(game, 100, "health");
+        healthButton.addActionListener(hbl);
         healthButton.setFocusable(false);
     }
 
     private void createManaButton() {
         manaButton = new JButton("Increase max mana [100 coins]");
-        manaButton.addActionListener(new PaymentButtonListener(game, 100, "mana"));
+        mbl = new PaymentButtonListener(game, 100, "mana");
+        manaButton.addActionListener(mbl);
         manaButton.setFocusable(false);
     }
 

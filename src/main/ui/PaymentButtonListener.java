@@ -18,6 +18,10 @@ public class PaymentButtonListener implements ActionListener {
         this.type = type;
     }
 
+    public void setGame(Game g) {
+        game = g;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Item coin = new Item("coin", TextColor.ANSI.GREEN, 0, 0);

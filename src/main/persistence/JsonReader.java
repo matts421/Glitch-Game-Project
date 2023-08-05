@@ -124,9 +124,10 @@ public class JsonReader {
         int posX = json.getJSONArray("position").getInt(0);
         int posY = json.getJSONArray("position").getInt(1);
         Rectangle model = parseModel(json.getJSONObject("model"));
+        int maxMana = json.getInt("maxMana");
         Inventory inventory = parseInventory(json.getJSONObject("inventory"));
 
-        return new Warrior(health, mana, direction, airborne, posX, posY, inventory, model);
+        return new Warrior(health, mana, direction, airborne, posX, posY, inventory, model, maxMana);
     }
 
     // EFFECTS: parses Mage from JSON object and returns it
@@ -137,10 +138,11 @@ public class JsonReader {
         boolean airborne = json.getBoolean("airborne");
         int posX = json.getJSONArray("position").getInt(0);
         int posY = json.getJSONArray("position").getInt(1);
+        int maxMana = json.getInt("maxMana");
         Rectangle model = parseModel(json.getJSONObject("model"));
         Inventory inventory = parseInventory(json.getJSONObject("inventory"));
 
-        return new Mage(health, mana, direction, airborne, posX, posY, inventory, model);
+        return new Mage(health, mana, direction, airborne, posX, posY, inventory, model, maxMana);
     }
 
     // EFFECTS: parses Ranger from JSON object and returns it
@@ -151,10 +153,11 @@ public class JsonReader {
         boolean airborne = json.getBoolean("airborne");
         int posX = json.getJSONArray("position").getInt(0);
         int posY = json.getJSONArray("position").getInt(1);
+        int maxMana = json.getInt("maxMana");
         Rectangle model = parseModel(json.getJSONObject("model"));
         Inventory inventory = parseInventory(json.getJSONObject("inventory"));
 
-        return new Ranger(health, mana, direction, airborne, posX, posY, inventory, model);
+        return new Ranger(health, mana, direction, airborne, posX, posY, inventory, model, maxMana);
     }
 
     // EFFECTS: parses a model (rectangle) from JSON object and returns it

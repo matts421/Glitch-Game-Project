@@ -17,8 +17,8 @@ public class Ranger extends GameCharacter implements Writable {
     // EFFECTS: creates ranger with health, mana, and color specified by
     //          MAX_HEALTH, MAX_MANA, and TEXT_COLOR
     public Ranger(int health, int mana, int direction, boolean airborne,
-                   int posX, int posY, Inventory inventory, Rectangle model) {
-        super(health, mana, direction, airborne, posX, posY, inventory, model, TEXT_COLOR, MAX_MANA);
+                   int posX, int posY, Inventory inventory, Rectangle model, int maxMana) {
+        super(health, mana, direction, airborne, posX, posY, inventory, model, TEXT_COLOR, maxMana);
     }
 
     // EFFECTS: returns Ranger for string representation

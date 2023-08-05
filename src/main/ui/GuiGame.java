@@ -35,21 +35,26 @@ public class GuiGame extends JFrame {
     private SavePanel savePanel;
     private LoadPanel loadPanel;
     private CardLayout cardLayout;
+    private ArrayList<Integer> playerMovementKeyCodes;
 
     public GuiGame() {
         super("Glitch Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(false);
         setUpGame();
+        createPlayerMovementKeyCodes();
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         ip = new InventoryPanel(game);
         gp = new GamePanel(game);
-        savePanel = new SavePanel(game, jsonWriter, JSON_STORE);
-        loadPanel = new LoadPanel(game, jsonReader, JSON_STORE);
+        savePanel = new SavePanel(this);
+        loadPanel = new LoadPanel(this);
+
         mainPanel.add(ip, "inventory");
         mainPanel.add(gp, "game");
+        mainPanel.add(savePanel, "save");
+        mainPanel.add(loadPanel, "load");
 
         sp = new ScorePanel(game);
 
@@ -62,11 +67,19 @@ public class GuiGame extends JFrame {
         cardLayout.show(mainPanel, "game");
     }
 
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
     private void setUpGame() {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y,
                 1 * Game.UP_SCALE, 1 * Game.UP_SCALE);
         Warrior player = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
-                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model, Warrior.MAX_MANA);
         GameMap testMap = new GameMap(new ArrayList<>(), new Inventory(), new ArrayList<>(), new ArrayList<>(),
                 "temp");
         game = new Game(Game.WIDTH, Game.HEIGHT, 0, player, testMap);
@@ -75,6 +88,16 @@ public class GuiGame extends JFrame {
 
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+    }
+
+    private void createPlayerMovementKeyCodes() {
+        playerMovementKeyCodes = new ArrayList<>();
+        playerMovementKeyCodes.add(KeyEvent.VK_KP_LEFT);
+        playerMovementKeyCodes.add(KeyEvent.VK_KP_RIGHT);
+        playerMovementKeyCodes.add(KeyEvent.VK_UP);
+        playerMovementKeyCodes.add(KeyEvent.VK_RIGHT);
+        playerMovementKeyCodes.add(KeyEvent.VK_LEFT);
+        playerMovementKeyCodes.add(KeyEvent.VK_SPACE);
     }
 
     // Set up timer
@@ -115,6 +138,25 @@ public class GuiGame extends JFrame {
     }
 
     public void doAction(int keyCode) {
+        if (playerMovementKeyCodes.contains(keyCode)) {
+            handlePlayerActions(keyCode);
+        }
+        if (keyCode == KeyEvent.VK_F1) {
+            game.cycleCharacterClass();
+        } else if (keyCode == KeyEvent.VK_F2) {
+//            saveGame();
+            cardLayout.show(mainPanel, "save");
+        } else if (keyCode == KeyEvent.VK_F3) {
+//            loadGame();
+            cardLayout.show(mainPanel, "load");
+        } else if (keyCode == KeyEvent.VK_E) {
+            handleInventory();
+        } else if (keyCode == KeyEvent.VK_ESCAPE && game.isEnded()) {
+            System.exit(0);
+        }
+    }
+
+    private void handlePlayerActions(int keyCode) {
         GameCharacter player = game.getPlayer();
         if (keyCode == KeyEvent.VK_KP_LEFT || keyCode == KeyEvent.VK_LEFT) {
             player.setDirection(-1);
@@ -129,16 +171,6 @@ public class GuiGame extends JFrame {
             if (projectile != null) {
                 game.getMap().addProjectile(projectile);
             }
-        } else if (keyCode == KeyEvent.VK_F1) {
-            game.cycleCharacterClass();
-        } else if (keyCode == KeyEvent.VK_F2) {
-            //
-        } else if (keyCode == KeyEvent.VK_F3) {
-//            ip.setGame(game);
-//            sp.setGame(game);
-//            gp.setGame(game);
-        } else if (keyCode == KeyEvent.VK_E) {
-            handleInventory();
         }
     }
 
@@ -163,7 +195,29 @@ public class GuiGame extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads game from file
+    public void loadGame() {
+        try {
+            game = jsonReader.read();
+            gp.setGame(game);
+            sp.setGame(game);
+            ip.setGame(game);
+            ip.updateButtonListeners();
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
 
-
-
+    // EFFECTS: saves the game to file
+    public void saveGame() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(game);
+            jsonWriter.close();
+            ip.updateButtonListeners();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
 }

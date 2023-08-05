@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class GamePanel extends MainGamePanel {
     private static final String OVER = "Game Over!";
-    private static final String REPLAY = "R to replay";
+    private static final String EXIT = "ESC to exit";
 
     // Constructs a game panel
     // effects:  sets size and background colour of panel,
@@ -125,11 +125,14 @@ public class GamePanel extends MainGamePanel {
     // effects:  draws "game over" and replay instructions onto g
     private void gameOver(Graphics g) {
         Color saved = g.getColor();
+        Item coin = new Item("coin", TextColor.ANSI.GREEN, 0,0);
         g.setColor(new Color(0, 0, 0));
         g.setFont(new Font("Arial", 20, 20));
         FontMetrics fm = g.getFontMetrics();
         centreString(OVER, g, fm, Game.HEIGHT / 2);
-        centreString(REPLAY, g, fm, Game.HEIGHT / 2 + 50);
+        centreString("You finished with " + game.getPlayer().getInventory().getQuantity(coin) + " coins.",
+                g, fm, Game.HEIGHT / 2 + 50);
+        centreString(EXIT, g, fm, Game.HEIGHT / 2 + 100);
         g.setColor(saved);
     }
 

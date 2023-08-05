@@ -24,7 +24,7 @@ public class GameTest {
     public void runBefore() {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
         gc = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
-                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model, 100);
         barriers = new ArrayList<>();
         enemies = new ArrayList<>();
         e = new Enemy(0, 0);

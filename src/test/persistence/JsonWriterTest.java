@@ -21,7 +21,7 @@ public class JsonWriterTest extends JsonTest {
         Inventory inventory = new Inventory();
         Rectangle model = new Rectangle(0,0,1,1);
         w = new Warrior(0, 0, 1, false, 0, 0,
-                inventory, model);
+                inventory, model, 100);
         dummyMap = new GameMap(new ArrayList<>(), new Inventory(), new ArrayList<>(), new ArrayList<>(),
                 "test");
         game = new Game(100, 100, 0, w, dummyMap);

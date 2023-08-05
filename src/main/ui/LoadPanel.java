@@ -1,6 +1,8 @@
 package ui;
 
+import com.googlecode.lanterna.TextColor;
 import model.Game;
+import model.Item;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -10,44 +12,55 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class LoadPanel extends PersistencePanel {
-    String store;
-    JsonReader jsonReader;
 
-    public LoadPanel(Game g, JsonReader jsonReader, String store) {
+    public LoadPanel(GuiGame g) {
         super(g);
-        this.jsonReader = jsonReader;
-        this.store = store;
+        createButtons();
+
+        add(confirmButton);
+        add(cancelButton);
+    }
+
+    @Override
+    public void createButtons() {
+        confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(confirmLoadListener);
+        confirmButton.setFocusable(false);
+
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(cancelLoadListener);
+        cancelButton.setFocusable(false);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        drawConfirmButton(g);
-//        drawDeclineButton(g);
-    }
+        drawText(g);
 
-    private void drawConfirmButton(Graphics g) {
-        Color savedCol = g.getColor();
-        JButton loadButton = new JButton("Confirm load");
-        //itemButton.setLocation(posX, posY + CELL_SIZE);
-        loadButton.addActionListener(new ConfirmButtonListener(this));
-        loadButton.setSize(120, 30);
-        loadButton.setFocusable(false);
-        add(loadButton);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: loads game from file
-    private void loadGame() {
-        try {
-            game = jsonReader.read();
-//            gp.setGame(game);
-//            sp.setGame(game);
-//            ip.setGame(game);
-        } catch (IOException e) {
-            System.out.println("Unable to read from file: " + store);
+        if (confirmButton.getParent() == null) {
+            add(confirmButton);
         }
+
+        if (cancelButton.getParent() == null) {
+            add(cancelButton);
+        }
+
+        setButtonLocations();
+    }
+
+    private void setButtonLocations() {
+        confirmButton.setLocation(Game.WIDTH / 2 - 100 - confirmButton.getWidth(), Game.WIDTH / 2);
+        cancelButton.setLocation(Game.WIDTH / 2 + 100, Game.WIDTH / 2);
+    }
+
+    private void drawText(Graphics g) {
+        Color saved = g.getColor();
+        g.setColor(new Color(0, 0, 0));
+        g.setFont(new Font("Arial", 20, 20));
+        FontMetrics fm = g.getFontMetrics();
+        centreString("Do you want to load from save file?", g, fm, Game.HEIGHT / 2);
+        g.setColor(saved);
     }
 
 }

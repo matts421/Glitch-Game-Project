@@ -16,7 +16,7 @@ public class WarriorTest {
     public void runBefore() {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
         w = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
-                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model, 100);
     }
 
     @Test

@@ -16,6 +16,10 @@ public class ItemButtonListener implements ActionListener {
         this.game = game;
     }
 
+    public void setGame(Game g) {
+        game = g;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         game.getPlayer().getInventory().removeItem(item, 1);

@@ -16,7 +16,7 @@ public class MageTest {
     public void runBefore() {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
         m = new Mage(Mage.MAX_HEALTH, Mage.MAX_MANA, 1, false,
-                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model, 100);
     }
 
     @Test

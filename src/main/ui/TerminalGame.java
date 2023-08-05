@@ -48,7 +48,7 @@ public class TerminalGame {
     public void start() throws IOException, InterruptedException {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
         Warrior player = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
-                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model, Warrior.MAX_MANA);
 
         screen = new DefaultTerminalFactory().createScreen();
         screen.startScreen();

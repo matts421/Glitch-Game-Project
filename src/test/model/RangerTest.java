@@ -16,7 +16,7 @@ public class RangerTest {
     public void runBefore() {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
         r = new Ranger(Ranger.MAX_HEALTH, Ranger.MAX_MANA, 1, false,
-                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model);
+                GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model, 100);
     }
 
     @Test

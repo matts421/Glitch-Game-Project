@@ -17,4 +17,8 @@ public abstract class MainGamePanel extends JPanel {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    public void updateButtonListeners() {
+        //
+    }
 }

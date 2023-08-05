@@ -251,7 +251,7 @@ public class GameCharacterTest {
         Inventory inventory = new Inventory();
         Rectangle model = new Rectangle(0, 0, 1, 1);
         Warrior w = new Warrior(0, 0, 1, false, 0, 0,
-                inventory, model);
+                inventory, model, 100);
 
         JSONObject jsonObject = w.toJson();
         assertEquals("Warrior", jsonObject.getString("name"));
@@ -262,7 +262,7 @@ public class GameCharacterTest {
         Inventory inventory = new Inventory();
         Rectangle model = new Rectangle(0, 0, 1, 1);
         Mage m = new Mage(0, 0, 1, false, 0, 0,
-                inventory, model);
+                inventory, model, 100);
 
         JSONObject jsonObject = m.toJson();
         assertEquals("Mage", jsonObject.getString("name"));
@@ -273,7 +273,7 @@ public class GameCharacterTest {
         Inventory inventory = new Inventory();
         Rectangle model = new Rectangle(0, 0, 1, 1);
         Ranger r = new Ranger(0, 0, 1, false, 0, 0,
-                inventory, model);
+                inventory, model, 100);
 
         JSONObject jsonObject = r.toJson();
         assertEquals("Ranger", jsonObject.getString("name"));
