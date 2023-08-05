@@ -3,7 +3,6 @@ package ui;
 import model.Game;
 import model.Item;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

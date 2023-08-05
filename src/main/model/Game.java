@@ -83,10 +83,12 @@ public class Game implements Writable {
         }
     }
 
-    private void handleOldProjectiles() {
+    // MODIFIES: this
+    // EFFECTS: removes all projectiles in map that are off the screen.
+    public void handleOldProjectiles() {
         ArrayList<Projectile> projectilesToRemove = new ArrayList<>();
         for (Projectile p: map.getProjectiles()) {
-            if (p.getPosX() > maxX || p.getPosY() < 0) {
+            if (p.getPosX() > maxX || p.getPosX() + p.getModel().width < 0) {
                 projectilesToRemove.add(p);
             }
         }
@@ -293,25 +295,25 @@ public class Game implements Writable {
 
     private ArrayList<Rectangle> createMapBarriers() {
         ArrayList<Rectangle> barriers = new ArrayList<>();
-        barriers.add(new Rectangle(0, 3 * Game.UP_SCALE, 10 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+        barriers.add(new Rectangle(0, 3 * Game.UP_SCALE, 10 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(6 * Game.UP_SCALE, 10 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                3 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(10 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                3 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(16 * Game.UP_SCALE, 19 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                3 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(19 * Game.UP_SCALE, 16 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                5 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(16 * Game.UP_SCALE, 13 * Game.UP_SCALE,
-                3 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                3 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(21 * Game.UP_SCALE, 11 * Game.UP_SCALE,
-                15 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                15 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(29 * Game.UP_SCALE, 8 * Game.UP_SCALE,
-                4 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                4 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(23 * Game.UP_SCALE, 5 * Game.UP_SCALE,
-                5 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                5 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(12 * Game.UP_SCALE, 4 * Game.UP_SCALE,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                9 * Game.UP_SCALE, Game.UP_SCALE));
         return barriers;
     }
 
@@ -329,9 +331,9 @@ public class Game implements Writable {
 
 
         barriers.add(new Rectangle(0, 21 * Game.UP_SCALE + 2,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                9 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(15 * Game.UP_SCALE, 21 * Game.UP_SCALE + 2,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                9 * Game.UP_SCALE, Game.UP_SCALE));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "1");
     }
@@ -351,9 +353,9 @@ public class Game implements Writable {
 
 
         barriers.add(new Rectangle(0, 21 * Game.UP_SCALE + 2,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                9 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(15 * Game.UP_SCALE, 21 * Game.UP_SCALE + 2,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                9 * Game.UP_SCALE, Game.UP_SCALE));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "2");
     }
@@ -373,9 +375,9 @@ public class Game implements Writable {
 
 
         barriers.add(new Rectangle(0, 21 * Game.UP_SCALE + 2,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                9 * Game.UP_SCALE, Game.UP_SCALE));
         barriers.add(new Rectangle(15 * Game.UP_SCALE, 21 * Game.UP_SCALE + 2,
-                9 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                9 * Game.UP_SCALE, Game.UP_SCALE));
 
         return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "3");
     }

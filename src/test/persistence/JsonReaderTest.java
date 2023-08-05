@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// **NOTE** this class was inspired by Dr. Paul Carter's JsonSerializationDemo and it takes elements from
+// **NOTE** this class was inspired by Dr. Paul Carter's JsonSerializationDemo, and it takes elements from
 //          JsonReaderTest
 public class JsonReaderTest extends JsonTest {
 
@@ -19,7 +19,7 @@ public class JsonReaderTest extends JsonTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            Game game = reader.read();
+            reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -36,6 +36,7 @@ public class JsonReaderTest extends JsonTest {
             assertEquals(22, game.getMaxY());
             assertEquals(39, game.getMaxX());
             assertEquals("1", game.getMap().getName());
+            assertEquals(5, game.getPlayer().getMaxMana());
             assertTrue(game.getMap().getProjectiles().isEmpty());
             assertTrue(game.getMap().getEnemies().isEmpty());
             assertTrue(game.getMap().getBarriers().isEmpty());
@@ -55,6 +56,7 @@ public class JsonReaderTest extends JsonTest {
             assertEquals(22 * Game.UP_SCALE, game.getMaxY());
             assertEquals(39 * Game.UP_SCALE, game.getMaxX());
             checkMap(game.getMap(), game.buildMapThree());
+            assertEquals(5, game.getPlayer().getMaxMana());
             checkPlayer(game.getPlayer(), "Mage", 5, 0);
             checkInventory(game.getPlayer().getInventory(), "coin", 56);
             assertTrue(game.getMap().getItems().getItems().isEmpty());
@@ -76,10 +78,11 @@ public class JsonReaderTest extends JsonTest {
             TextColor color = new TextColor.RGB(0,170, 170);
             Projectile p = new Projectile(33 * Game.UP_SCALE, 21 * Game.UP_SCALE, 1, color,
                     new Rectangle(33 * Game.UP_SCALE, 21 * Game.UP_SCALE,
-                            1 * Game.UP_SCALE, 1 * Game.UP_SCALE));
+                            Game.UP_SCALE, Game.UP_SCALE));
             map2.addProjectile(p);
 
             checkMap(game.getMap(), map2);
+            assertEquals(5, game.getPlayer().getMaxMana());
             checkPlayer(game.getPlayer(), "Ranger", 5, 0);
             checkInventory(game.getPlayer().getInventory(), "coin", 56);
             assertTrue(game.getMap().getItems().getItems().isEmpty());

@@ -42,6 +42,9 @@ public class GameTest {
         assertEquals(0, game.getTickCount());
         assertFalse(game.isEnded());
         assertFalse(game.isLevelOver());
+        assertFalse(game.isInventoryOpen());
+        assertEquals(100 * Game.UP_SCALE, game.getMaxX());
+        assertEquals(100 * Game.UP_SCALE, game.getMaxY());
     }
 
     @Test
@@ -62,12 +65,25 @@ public class GameTest {
 
     @Test
     public void testTickUpdateManaFull() {
-        gc.setMana(5);
+        gc.setMana(gc.getMaxMana());
         game.setTickCount(Game.MANA_TICKS - 1);
         game.tick();
 
-        assertEquals(5, gc.getMana());
+        assertEquals(gc.getMaxMana(), gc.getMana());
         assertEquals(0, game.getTickCount());
+    }
+
+    @Test
+    public void testHandleOldProjectiles() {
+        Rectangle model = new Rectangle(game.getMaxX() + 1, game.getMaxY(), Game.UP_SCALE, Game.UP_SCALE);
+        Projectile p1 = new Projectile(game.getMaxX() + 1, game.getMaxY(), 1, TextColor.ANSI.WHITE, model);
+        Projectile p2 = new Projectile(-1 - model.width, game.getMaxY(), -1, TextColor.ANSI.WHITE, model);
+        game.getMap().addProjectile(p1);
+        game.getMap().addProjectile(p2);
+
+        game.tick();
+
+        assertTrue(game.getMap().getProjectiles().isEmpty());
     }
 
     @Test
@@ -399,8 +415,8 @@ public class GameTest {
 
     @Test
     public void testTickProjectileMissWall() {
-        Rectangle barrier = new Rectangle(gc.getPosX() + 1 * Game.UP_SCALE,
-                gc.getPosY() + 1 * Game.UP_SCALE, 1, 1);
+        Rectangle barrier = new Rectangle(gc.getPosX() + Game.UP_SCALE,
+                gc.getPosY() + Game.UP_SCALE, 1, 1);
         Projectile p1 = new Projectile(gc);
         map.getBarriers().add(barrier);
         map.getProjectiles().add(p1);
@@ -472,6 +488,12 @@ public class GameTest {
 
         game.setMap(game.getNextMap());
         assertEquals("1", game.getMap().getName());
+    }
+
+    @Test
+    public void testSetInventoryOpen() {
+        game.setInventoryOpen(true);
+        assertTrue(game.isInventoryOpen());
     }
 
     @Test

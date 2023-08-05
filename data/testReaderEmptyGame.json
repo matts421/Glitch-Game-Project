@@ -12,6 +12,7 @@
     "player": {
         "airborne": false,
         "mana": 5,
+        "maxMana": 5,
         "name": "Warrior",
         "health": 5,
         "model": {

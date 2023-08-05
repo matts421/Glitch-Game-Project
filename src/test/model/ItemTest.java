@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -109,11 +108,17 @@ public class ItemTest {
     }
 
     @Test
-    public void testHashCode() {
+    public void testHashCodeNotNull() {
         int result = item.getName().hashCode();
-        result = 31 * result + 0;
-        result = 31 * result + 0;
+        result = 31 * result;
+        result = 31 * result;
         assertEquals(result, item.hashCode());
+    }
+
+    @Test
+    public void testHashCodeNull() {
+        Item newItem = new Item(null, TextColor.ANSI.WHITE, 0,0);
+        assertEquals(0, newItem.hashCode());
     }
 
 }
