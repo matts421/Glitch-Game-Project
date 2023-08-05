@@ -5,6 +5,8 @@ import model.Game;
 import javax.swing.*;
 import java.awt.*;
 
+// Represents the score panel of the game that displays the health, level, mana, and class of the character
+// NOTE: this class has been influenced by the work done in SpaceInvaders
 public class ScorePanel extends JPanel {
     private static final int LBL_WIDTH = 200;
     private static final int LBL_HEIGHT = 30;
@@ -14,8 +16,7 @@ public class ScorePanel extends JPanel {
     private JLabel levelLabel;
     private JLabel classLabel;
 
-    // Constructs a score panel
-    // effects: sets the background colour and draws the initial labels;
+    // EFFECTS: Sets the background colour and draws the initial labels;
     //          updates this with the game whose score is to be displayed
     public ScorePanel(Game g) {
         game = g;
@@ -43,10 +44,9 @@ public class ScorePanel extends JPanel {
         add(classLabel);
     }
 
-    // Updates the score panel
-    // modifies: this
-    // effects:  updates number of invaders shot and number of missiles
-    //           remaining to reflect current state of game
+    // MODIFIES: this
+    // EFFECTS: Updates the current health, mana, level, and class of the character
+    //          to reflect current state of game
     public void update() {
         healthLabel.setText("<3".repeat(game.getPlayer().getHealth()));
         manaLabel.setText("*".repeat(game.getPlayer().getMana()));

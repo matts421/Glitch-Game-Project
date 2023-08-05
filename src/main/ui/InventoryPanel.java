@@ -6,6 +6,7 @@ import model.*;
 import javax.swing.*;
 import java.awt.*;
 
+// Represents an inventory panel to display the player's items.
 public class InventoryPanel extends MainGamePanel {
     private static final int CELL_SIZE = 100;
     private Item coin = new Item("coin", TextColor.ANSI.GREEN, 0, 0);
@@ -16,6 +17,7 @@ public class InventoryPanel extends MainGamePanel {
     private PaymentButtonListener hbl;
     private PaymentButtonListener mbl;
 
+    // EFFECTS: initializes the inventory panel and creates buttons for adding health, mana, and dropping coins
     public InventoryPanel(Game g) {
         super(g);
         createItemButton();
@@ -24,6 +26,8 @@ public class InventoryPanel extends MainGamePanel {
         addButtons();
     }
 
+    // MODIFIES: g
+    // EFFECTS: Draws the current state of the inventory.
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -45,6 +49,8 @@ public class InventoryPanel extends MainGamePanel {
         drawInventory(g);
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates the button listeners to keep track of current game state.
     @Override
     public void updateButtonListeners() {
         ibl.setGame(game);
@@ -52,18 +58,24 @@ public class InventoryPanel extends MainGamePanel {
         mbl.setGame(game);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds the mana, add health, and drop item buttons to panel.
     private void addButtons() {
         add(itemButton);
         add(healthButton);
         add(manaButton);
     }
 
+    // MODIFIES: this
+    // EFFECTS: centres the button locations in the panel
     private void setButtonLocations() {
         itemButton.setLocation(Game.WIDTH / 2, 0);
         manaButton.setLocation(Game.WIDTH - manaButton.getWidth(), 0);
         healthButton.setLocation(0, 0);
     }
 
+    // MODIFIES: this
+    // EFFECTS: disables or enables the panel's buttons depending on the state of the game
     private void enableProperButtons() {
         if (!game.getPlayer().getInventory().getItems().contains(coin)) {
             itemButton.setEnabled(false);
@@ -90,6 +102,8 @@ public class InventoryPanel extends MainGamePanel {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the drop item button.
     private void createItemButton() {
         itemButton = new JButton("Drop item");
         ibl = new ItemButtonListener(game, new Item("coin", TextColor.ANSI.GREEN, 0,0));
@@ -98,6 +112,8 @@ public class InventoryPanel extends MainGamePanel {
         itemButton.setFocusable(false);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the add health button.
     private void createHealthButton() {
         healthButton = new JButton("Buy health [100 coins]");
         hbl = new PaymentButtonListener(game, 100, "health");
@@ -105,6 +121,8 @@ public class InventoryPanel extends MainGamePanel {
         healthButton.setFocusable(false);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the add mana button.
     private void createManaButton() {
         manaButton = new JButton("Increase max mana [100 coins]");
         mbl = new PaymentButtonListener(game, 100, "mana");
@@ -112,10 +130,14 @@ public class InventoryPanel extends MainGamePanel {
         manaButton.setFocusable(false);
     }
 
+    // MODIFIES: g
+    // EFFECTS: draws the inventory
     private void drawInventory(Graphics g) {
         drawInventoryCells(g);
     }
 
+    // MODIFIES: g
+    // EFFECTS: draws an inventory cell for each item in the inventory.
     private void drawInventoryCells(Graphics g) {
         Color savedCol = g.getColor();
         g.setColor(new Color(52, 48, 48));
@@ -134,6 +156,9 @@ public class InventoryPanel extends MainGamePanel {
         g.setColor(savedCol);
     }
 
+    // REQUIRES: game.getPlayer().getInventory().getItems().contains(i)
+    // MODIFIES: g
+    // EFFECTS: draws a single item cell in the inventory.
     private void drawItemCell(Graphics g, int posX, int posY, Item i, int quantity) {
         Color savedCol = g.getColor();
         g.setColor(new Color(52, 48, 48));

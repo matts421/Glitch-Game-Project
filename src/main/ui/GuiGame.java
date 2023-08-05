@@ -1,13 +1,5 @@
 package ui;
 
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import com.googlecode.lanterna.screen.Screen;
 import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -22,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// Represents the GUI of the game.
+// NOTE: this class takes influence from SpaceInvaders
 public class GuiGame extends JFrame {
     private static final String JSON_STORE = "./data/game.json";
     private static final int INTERVAL = 10;
@@ -37,6 +31,7 @@ public class GuiGame extends JFrame {
     private CardLayout cardLayout;
     private ArrayList<Integer> playerMovementKeyCodes;
 
+    // EFFECTS: instantiates GUI, and sets up the game and its necessary panels.
     public GuiGame() {
         super("Glitch Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,9 +70,11 @@ public class GuiGame extends JFrame {
         return mainPanel;
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a brand new game state and instantiates the persistence objects.
     private void setUpGame() {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y,
-                1 * Game.UP_SCALE, 1 * Game.UP_SCALE);
+                Game.UP_SCALE, Game.UP_SCALE);
         Warrior player = new Warrior(Warrior.MAX_HEALTH, Warrior.MAX_MANA, 1, false,
                 GameCharacter.START_X, GameCharacter.START_Y, new Inventory(), model, Warrior.MAX_MANA);
         GameMap testMap = new GameMap(new ArrayList<>(), new Inventory(), new ArrayList<>(), new ArrayList<>(),
@@ -90,6 +87,8 @@ public class GuiGame extends JFrame {
         jsonReader = new JsonReader(JSON_STORE);
     }
 
+    // MODIFIES: this
+    // EFFECTS: builds a list of player movement key codes
     private void createPlayerMovementKeyCodes() {
         playerMovementKeyCodes = new ArrayList<>();
         playerMovementKeyCodes.add(KeyEvent.VK_KP_LEFT);
@@ -100,12 +99,14 @@ public class GuiGame extends JFrame {
         playerMovementKeyCodes.add(KeyEvent.VK_SPACE);
     }
 
-    // Set up timer
-    // modifies: none
-    // effects:  initializes a timer that updates game each
+    // EFFECTS:  initializes a timer that updates game each
     //           INTERVAL milliseconds
+    // NOTE: this method was directly reproduced from SpaceInvaders
     private void addTimer() {
         Timer t = new Timer(INTERVAL, new ActionListener() {
+
+            // MODIFIES: this
+            // EFFECTS: progresses game state and repaints panels to match any changes
             @Override
             public void actionPerformed(ActionEvent ae) {
                 tick();
@@ -119,15 +120,15 @@ public class GuiGame extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: General tick function for terminal game. Handle's keyboard input, checks if the current level stage
-    //          is completed, ticks the game clock, and renders the game information onto the terminal window.
+    // EFFECTS: General tick function for terminal game. Checks if the current level stage
+    //          is completed and ticks the game clock.
     //
     //  **NOTE**: This code was inspired by Matzen Kotb's Lanterna Snake Console Game.
     public void tick() {
 
         if (game.isLevelOver()) {
             GameMap newMap = game.getNextMap();
-            game.getPlayer().setPosX(0 * Game.UP_SCALE);
+            game.getPlayer().setPosX(0);
             game.getPlayer().setPosY(19 * Game.UP_SCALE);
             game.getPlayer().updateModel();
             game.setLevelOver(false);
@@ -137,25 +138,26 @@ public class GuiGame extends JFrame {
         game.tick();
     }
 
+    // MODIFIES: this
+    // EFFECTS: performs game actions defined by the input key code
     public void doAction(int keyCode) {
         if (playerMovementKeyCodes.contains(keyCode)) {
             handlePlayerActions(keyCode);
-        }
-        if (keyCode == KeyEvent.VK_F1) {
+        } else if (keyCode == KeyEvent.VK_F1) {
             game.cycleCharacterClass();
-        } else if (keyCode == KeyEvent.VK_F2) {
-//            saveGame();
+        } else if (keyCode == KeyEvent.VK_F2 && !game.isEnded()) {
             cardLayout.show(mainPanel, "save");
-        } else if (keyCode == KeyEvent.VK_F3) {
-//            loadGame();
+        } else if (keyCode == KeyEvent.VK_F3 && !game.isEnded()) {
             cardLayout.show(mainPanel, "load");
-        } else if (keyCode == KeyEvent.VK_E) {
+        } else if (keyCode == KeyEvent.VK_E && !game.isEnded()) {
             handleInventory();
         } else if (keyCode == KeyEvent.VK_ESCAPE && game.isEnded()) {
             System.exit(0);
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: a helper function to handle all the key inputs that move the player or fire projectiles
     private void handlePlayerActions(int keyCode) {
         GameCharacter player = game.getPlayer();
         if (keyCode == KeyEvent.VK_KP_LEFT || keyCode == KeyEvent.VK_LEFT) {
@@ -174,6 +176,8 @@ public class GuiGame extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: opens or closes the inventory panel depending on whether it is closed.
     private void handleInventory() {
         if (game.isInventoryOpen()) {
             game.setInventoryOpen(false);
@@ -185,10 +189,11 @@ public class GuiGame extends JFrame {
     }
 
 
-    /*
-     * A key handler to respond to key events
-     */
+    // Represents a key handler to capture key presses for the game
     private class KeyHandler extends KeyAdapter {
+
+        // MODIFIES: this
+        // EFFECTS: performs actions outlined in the doAction method depending on inputted key code.
         @Override
         public void keyPressed(KeyEvent e) {
             doAction(e.getKeyCode());
