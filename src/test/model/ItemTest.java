@@ -68,7 +68,7 @@ public class ItemTest {
 
     @Test
     public void testEqualsSameName() {
-        Item item2 = new Item("test", TextColor.ANSI.RED, 1, 1);
+        Item item2 = new Item("test", TextColor.ANSI.RED, 0, 0);
 
         assertEquals(item, item2);
     }
@@ -76,6 +76,20 @@ public class ItemTest {
     @Test
     public void testEqualsNotSameName() {
         Item item2 = new Item("not test", TextColor.ANSI.WHITE, 0, 0);
+
+        assertNotEquals(item, item2);
+    }
+
+    @Test
+    public void testEqualsNotSameX() {
+        Item item2 = new Item("test", TextColor.ANSI.WHITE, 1, 0);
+
+        assertNotEquals(item, item2);
+    }
+
+    @Test
+    public void testEqualsNotSameY() {
+        Item item2 = new Item("test", TextColor.ANSI.WHITE, 0, 1);
 
         assertNotEquals(item, item2);
     }
@@ -96,7 +110,10 @@ public class ItemTest {
 
     @Test
     public void testHashCode() {
-        assertEquals(Objects.hash(item.getName()), item.hashCode());
+        int result = item.getName().hashCode();
+        result = 31 * result + 0;
+        result = 31 * result + 0;
+        assertEquals(result, item.hashCode());
     }
 
 }

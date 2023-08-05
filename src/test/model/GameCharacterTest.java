@@ -17,7 +17,7 @@ public class GameCharacterTest {
         Rectangle model = new Rectangle(GameCharacter.START_X, GameCharacter.START_Y, 1, 1);
         Inventory inventory = new Inventory();
         gc = new GameCharacter(0, 0, 1, false,
-                GameCharacter.START_X, GameCharacter.START_Y, inventory, model, TextColor.ANSI.WHITE);
+                GameCharacter.START_X, GameCharacter.START_Y, inventory, model, TextColor.ANSI.WHITE, 0);
     }
 
     @Test
@@ -28,6 +28,7 @@ public class GameCharacterTest {
         assertEquals(1, gc.getDirection());
         assertEquals(GameCharacter.START_X, gc.getPosX());
         assertEquals(GameCharacter.START_Y, gc.getPosY());
+        assertEquals(0, gc.getMaxMana());
 
         assertTrue(gc.getInventory().getItems().isEmpty());
         assertEquals(1, gc.getModel().width);

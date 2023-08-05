@@ -215,10 +215,11 @@ public class GameTest {
     @Test
     public void testTickPlayerItemCollision() {
         Item item = new Item("test", TextColor.ANSI.WHITE, gc.getPosX(), gc.getPosY());
+        Item invItem = new Item("test", TextColor.ANSI.GREEN, 0, 0);
         map.getItems().addItem(item, 1);
         game.tick();
 
-        assertTrue(gc.getInventory().getItems().contains(item));
+        assertTrue(gc.getInventory().getItems().contains(invItem));
         assertFalse(map.getItems().getItems().contains(item));
     }
 

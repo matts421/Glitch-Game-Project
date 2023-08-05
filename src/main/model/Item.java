@@ -56,7 +56,6 @@ public class Item extends HasModel implements Writable {
         return name;
     }
 
-    // EFFECTS: overrides default equals() functionality to compare item name instead of the object itself
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -65,17 +64,25 @@ public class Item extends HasModel implements Writable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         Item item = (Item) o;
+
+        if (posX != item.posX) {
+            return false;
+        }
+        if (posY != item.posY) {
+            return false;
+        }
         return Objects.equals(name, item.name);
     }
 
-    // EFFECTS: overrides default hashCode() functionality to compare item name instead of the object itself
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + posX;
+        result = 31 * result + posY;
+        return result;
     }
-
-
 
     @Override
     public JSONObject toJson() {

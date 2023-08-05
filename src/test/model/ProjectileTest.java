@@ -20,7 +20,7 @@ public class ProjectileTest {
         Rectangle model = new Rectangle(0, 0, 1, 1);
 
         gc = new GameCharacter(0, 0, 1, false, 0, 0,
-                inventory, model, TextColor.ANSI.WHITE);
+                inventory, model, TextColor.ANSI.WHITE, 100);
         gc.setPosX(0);
         gc.setPosY(0);
         gc.updateModel();

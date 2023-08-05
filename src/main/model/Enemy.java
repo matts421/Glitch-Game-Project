@@ -22,7 +22,7 @@ public class Enemy extends HasModel implements Writable {
     public Enemy(int x, int y) {
         posX = x;
         posY = y;
-        color = TextColor.ANSI.MAGENTA;
+        color = new TextColor.RGB(255, 0, 255);
         model = new Rectangle(posX, posY, Game.UP_SCALE, Game.UP_SCALE);
     }
 

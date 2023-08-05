@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ScorePanel extends JPanel {
-//    private static final String INVADERS_TXT = "Invaders shot down: ";
-//    private static final String MISSILES_TXT = "Missiles remaining: ";
     private static final int LBL_WIDTH = 200;
     private static final int LBL_HEIGHT = 30;
     private Game game;
@@ -57,5 +55,9 @@ public class ScorePanel extends JPanel {
         classLabel.setForeground(game.getPlayer().getColor().toColor());
 
         repaint();
+    }
+
+    public void setGame(Game g) {
+        this.game = g;
     }
 }

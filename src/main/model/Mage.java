@@ -18,7 +18,7 @@ public class Mage extends GameCharacter implements Writable {
     //          MAX_HEALTH, MAX_MANA, and TEXT_COLOR
     public Mage(int health, int mana, int direction, boolean airborne,
                    int posX, int posY, Inventory inventory, Rectangle model) {
-        super(health, mana, direction, airborne, posX, posY, inventory, model, TEXT_COLOR);
+        super(health, mana, direction, airborne, posX, posY, inventory, model, TEXT_COLOR, MAX_MANA);
     }
 
     // EFFECTS: returns Mage for string representation

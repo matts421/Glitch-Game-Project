@@ -28,6 +28,7 @@ public class Game implements Writable {
     private final int maxY;
     private GameCharacter player;
     private GameMap map;
+    private boolean inventoryOpen;
 
     // EFFECTS: creates new game object with max x and y bounds, a character, and a map for the leve stage.
     //          The number of ticks starts at 0, and the game has not ended or completed the level stage.
@@ -39,6 +40,7 @@ public class Game implements Writable {
         levelOver = false;
         this.map = map;
         this.tickCount = tickCount;
+        inventoryOpen = false;
     }
 
     // MODIFIES: this
@@ -51,6 +53,7 @@ public class Game implements Writable {
         moveProjectiles();
         handleProjectileCollisions();
         handlePlayerCollisions();
+        handleOldProjectiles();
 
         if (checkEnded()) {
             ended = true;
@@ -73,10 +76,23 @@ public class Game implements Writable {
     // EFFECTS: every MANA_TICKS, regain MANA_BACK amount of mana, and reset tickCount to 0.
     private void updateMana() {
         if (tickCount == MANA_TICKS) {
-            if (player.getMana() < 5) {
+            if (player.getMana() < player.getMaxMana()) {
                 player.gainMana(MANA_BACK);
             }
             tickCount = 0;
+        }
+    }
+
+    private void handleOldProjectiles() {
+        ArrayList<Projectile> projectilesToRemove = new ArrayList<>();
+        for (Projectile p: map.getProjectiles()) {
+            if (p.getPosX() > maxX || p.getPosY() < 0) {
+                projectilesToRemove.add(p);
+            }
+        }
+
+        for (Projectile p: projectilesToRemove) {
+            map.removeProjectile(p);
         }
     }
 
@@ -101,7 +117,8 @@ public class Game implements Writable {
 
         if (playerItemCollision()) {
             Item item = collidedItem();
-            player.getInventory().addItem(item, map.getItems().getQuantity(item));
+            Item newItem = new Item(item.getName(), item.getColor(), 0, 0);
+            player.getInventory().addItem(newItem, map.getItems().getQuantity(item));
             map.removeItem(item, map.getItems().getQuantity(item));
         }
     }
@@ -273,61 +290,6 @@ public class Game implements Writable {
         }
     }
 
-//    // EFFECTS: create and return the first level stage's map
-//    public GameMap buildMapOne() {
-//        ArrayList<Rectangle> barriers = new ArrayList<>();
-//        barriers.add(new Rectangle(0, 3, 10, 1));
-//        barriers.add(new Rectangle(6, 10, 3, 1));
-//        barriers.add(new Rectangle(10, 19, 3, 1));
-//        barriers.add(new Rectangle(16, 19, 3, 1));
-//        barriers.add(new Rectangle(19, 16, 5, 1));
-//        barriers.add(new Rectangle(16, 13, 3, 1));
-//        barriers.add(new Rectangle(21, 11, 15, 1));
-//        barriers.add(new Rectangle(29, 8, 4, 1));
-//        barriers.add(new Rectangle(23, 5, 5, 1));
-//        barriers.add(new Rectangle(12, 4, 9, 1));
-//
-//        Enemy enemy1 = new Enemy(11, 18);
-//        Enemy enemy2 = new Enemy(3, 2);
-//        ArrayList<Enemy> enemies = new ArrayList<>();
-//        enemies.add(enemy1);
-//        enemies.add(enemy2);
-//
-//        barriers.add(new Rectangle(0, maxY, 9, 1));
-//        barriers.add(new Rectangle(15, maxY, 9, 1));
-//
-//        return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "1");
-//    }
-//
-//    // EFFECTS: create and return the second level stage's map
-//    public GameMap buildMapTwo() {
-//        ArrayList<Rectangle> barriers = new ArrayList<>();
-//        barriers.add(new Rectangle(0, 3, 10, 1));
-//        barriers.add(new Rectangle(6, 10, 3, 1));
-//        barriers.add(new Rectangle(10, 19, 3, 1));
-//        barriers.add(new Rectangle(16, 19, 3, 1));
-//        barriers.add(new Rectangle(19, 16, 5, 1));
-//        barriers.add(new Rectangle(16, 13, 3, 1));
-//        barriers.add(new Rectangle(21, 11, 15, 1));
-//        barriers.add(new Rectangle(29, 8, 4, 1));
-//        barriers.add(new Rectangle(23, 5, 5, 1));
-//        barriers.add(new Rectangle(12, 4, 9, 1));
-//
-//        Enemy enemy1 = new Enemy(11, 18);
-//        Enemy enemy2 = new Enemy(3, 2);
-//        Enemy enemy4 = new Enemy(15, 3);
-//
-//        ArrayList<Enemy> enemies = new ArrayList<>();
-//        enemies.add(enemy1);
-//        enemies.add(enemy2);
-//        enemies.add(enemy4);
-//
-//        barriers.add(new Rectangle(0, maxY, 9, 1));
-//        barriers.add(new Rectangle(15, maxY, 9, 1));
-//
-//        return new GameMap(barriers, new Inventory(), enemies, new ArrayList<>(), "2");
-//    }
-
     private ArrayList<Rectangle> createMapBarriers() {
         ArrayList<Rectangle> barriers = new ArrayList<>();
         barriers.add(new Rectangle(0, 3 * Game.UP_SCALE, 10 * Game.UP_SCALE, 1 * Game.UP_SCALE));
@@ -466,5 +428,13 @@ public class Game implements Writable {
 
     public int getMaxY() {
         return maxY;
+    }
+
+    public boolean isInventoryOpen() {
+        return inventoryOpen;
+    }
+
+    public void setInventoryOpen(boolean open) {
+        inventoryOpen = open;
     }
 }

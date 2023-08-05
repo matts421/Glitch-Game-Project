@@ -4,22 +4,19 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import model.*;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
+import java.util.Set;
 
-public class GamePanel extends JPanel {
-
+public class GamePanel extends MainGamePanel {
     private static final String OVER = "Game Over!";
     private static final String REPLAY = "R to replay";
-    private Game game;
 
     // Constructs a game panel
     // effects:  sets size and background colour of panel,
     //           updates this with the game to be displayed
     public GamePanel(Game g) {
-        setPreferredSize(new Dimension(Game.WIDTH, Game.HEIGHT));
-        setBackground(Color.GRAY);
-        this.game = g;
+        super(g);
     }
 
 

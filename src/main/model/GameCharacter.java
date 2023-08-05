@@ -13,7 +13,6 @@ import java.awt.*;
 public class GameCharacter extends HasModel implements Writable {
     public static final int MANA_COST = 1;
     public static final int START_X = 0 * Game.UP_SCALE;
-//    public static final int START_Y = 21 * Game.UP_SCALE - Game.UP_SCALE;
     public static final int START_Y = 19 * Game.UP_SCALE;
     private TextColor color;
     private int health;
@@ -24,19 +23,21 @@ public class GameCharacter extends HasModel implements Writable {
     private Rectangle model;
     private boolean airborne;
     private Inventory inventory;
+    private int maxMana;
 
     // EFFECTS: creates character with given health, mana, and color.
     //          Starts with empty inventory, facing right, and position
     //          in the bottom left corner of the screen. Hit-box is a single
     //          pixel centered at the x/y position.
     public GameCharacter(int health, int mana, int direction, boolean airborne,
-                         int posX, int posY, Inventory inventory, Rectangle model, TextColor color) {
+                         int posX, int posY, Inventory inventory, Rectangle model, TextColor color, int maxMana) {
         this.health = health;
         this.mana = mana;
         this.color = color;
         this.inventory = inventory;
         this.direction = direction;
         this.airborne = airborne;
+        this.maxMana = maxMana;
 
         this.posX = posX;
         this.posY = posY;
@@ -171,6 +172,14 @@ public class GameCharacter extends HasModel implements Writable {
         return mana;
     }
 
+    public void setMaxMana(int newMax) {
+        maxMana = newMax;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -187,6 +196,7 @@ public class GameCharacter extends HasModel implements Writable {
         json.put("name", name);
         json.put("health", health);
         json.put("mana", mana);
+        json.put("maxMana", maxMana);
         json.put("direction", direction);
         json.put("airborne", airborne);
         json.put("inventory", inventory.toJson());

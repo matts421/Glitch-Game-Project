@@ -44,11 +44,11 @@ public class Inventory implements Writable {
 
     // EFFECTS: returns number of times item appears in inventory. If not in inventory, return 0.
     public int getQuantity(Item item) {
-        try {
+        if (items.containsKey(item)) {
             return items.get(item);
-        } catch (NullPointerException npe) {
-            return 0;
         }
+
+        return 0;
     }
 
     public Set<Item> getItems() {

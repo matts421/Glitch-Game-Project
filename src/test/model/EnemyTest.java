@@ -23,7 +23,7 @@ public class EnemyTest {
     public void testConstructor1() {
         assertEquals(0, e.getPosX());
         assertEquals(0, e.getPosY());
-        assertEquals(TextColor.ANSI.MAGENTA, e.getColor());
+        assertEquals(new TextColor.RGB(255,0,255), e.getColor());
 
         assertEquals(0, e.getModel().x);
         assertEquals(0, e.getModel().y);
