@@ -1,15 +1,13 @@
 package ui;
 
 import model.*;
+import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +32,8 @@ public class GuiGame extends JFrame {
     // EFFECTS: instantiates GUI, and sets up the game and its necessary panels.
     public GuiGame() {
         super("Glitch Game");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new LogHandler());
         setUndecorated(false);
         setUpGame();
         createPlayerMovementKeyCodes();
@@ -46,10 +45,7 @@ public class GuiGame extends JFrame {
         savePanel = new SavePanel(this);
         loadPanel = new LoadPanel(this);
 
-        mainPanel.add(ip, "inventory");
-        mainPanel.add(gp, "game");
-        mainPanel.add(savePanel, "save");
-        mainPanel.add(loadPanel, "load");
+        buildMainPanel();
 
         sp = new ScorePanel(game);
 
@@ -60,6 +56,16 @@ public class GuiGame extends JFrame {
         setVisible(true);
         addTimer();
         cardLayout.show(mainPanel, "game");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: helper function to build the main panel in the card layout from
+    //          the game, save, load, and inventory panels.
+    private void buildMainPanel() {
+        mainPanel.add(ip, "inventory");
+        mainPanel.add(gp, "game");
+        mainPanel.add(savePanel, "save");
+        mainPanel.add(loadPanel, "load");
     }
 
     public CardLayout getCardLayout() {
@@ -152,6 +158,9 @@ public class GuiGame extends JFrame {
         } else if (keyCode == KeyEvent.VK_E && !game.isEnded()) {
             handleInventory();
         } else if (keyCode == KeyEvent.VK_ESCAPE && game.isEnded()) {
+            for (Event e: EventLog.getInstance()) {
+                System.out.println(e);
+            }
             System.exit(0);
         }
     }
@@ -197,6 +206,19 @@ public class GuiGame extends JFrame {
         @Override
         public void keyPressed(KeyEvent e) {
             doAction(e.getKeyCode());
+        }
+    }
+
+    // Represents a log handler to print the game logs upon closing the JFrame
+    private class LogHandler extends WindowAdapter {
+
+        // EFFECTS: prints out the game's event log to the console when the game window is closed.
+        @Override
+        public void windowClosing(WindowEvent windowEvent) {
+            for (Event e: EventLog.getInstance()) {
+                System.out.println(e);
+            }
+            System.exit(0);
         }
     }
 

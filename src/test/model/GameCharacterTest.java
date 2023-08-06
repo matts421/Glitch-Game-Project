@@ -9,6 +9,7 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Tests for GameCharacter class
 public class GameCharacterTest {
     GameCharacter gc;
 
@@ -241,6 +242,14 @@ public class GameCharacterTest {
         gc.setInventory(testInventory);
 
         assertEquals(testInventory, gc.getInventory());
+    }
+
+    @Test
+    public void testLoseItem() {
+        Item i = new Item("coin", TextColor.ANSI.WHITE, 0, 0);
+        gc.getInventory().addItem(i, 10);
+        gc.loseItem(i, 1);
+        assertEquals(gc.getInventory().getQuantity(i), 9);
     }
 
     @Test

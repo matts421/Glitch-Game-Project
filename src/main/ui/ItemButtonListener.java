@@ -25,7 +25,7 @@ public class ItemButtonListener implements ActionListener {
     // EFFECTS: removes item from player's inventory, and places it in the map next to the player on button press.
     @Override
     public void actionPerformed(ActionEvent e) {
-        game.getPlayer().getInventory().removeItem(item, 1);
+        game.getPlayer().loseItem(item, 1);
         int playerX = game.getPlayer().getPosX();
         int playerY = game.getPlayer().getPosY();
         Item mapItem = new Item(item.getName(), item.getColor(),

@@ -9,6 +9,7 @@ import java.awt.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// Tests for Ranger class
 public class RangerTest {
     Ranger r;
 

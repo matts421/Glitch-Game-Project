@@ -10,6 +10,7 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// Tests for HasModel class
 public class HasModelTest {
 
     HasModel hm;

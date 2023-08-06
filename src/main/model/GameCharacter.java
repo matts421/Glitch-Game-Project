@@ -12,7 +12,7 @@ import java.awt.*;
  */
 public class GameCharacter extends HasModel implements Writable {
     public static final int MANA_COST = 1;
-    public static final int START_X = 0 * Game.UP_SCALE;
+    public static final int START_X = 0;
     public static final int START_Y = 19 * Game.UP_SCALE;
     private TextColor color;
     private int health;
@@ -134,6 +134,7 @@ public class GameCharacter extends HasModel implements Writable {
 
     public void setHealth(int health) {
         this.health = health;
+        EventLog.getInstance().logEvent(new Event("Health set to " + health));
     }
 
     public void setAirborne(boolean airborne) {
@@ -174,10 +175,21 @@ public class GameCharacter extends HasModel implements Writable {
 
     public void setMaxMana(int newMax) {
         maxMana = newMax;
+        EventLog.getInstance().logEvent(new Event("Max mana set to " + newMax));
     }
 
     public int getMaxMana() {
         return maxMana;
+    }
+
+
+    // REQUIRES: getInventory.getQuantity(item) >= quantity
+    // MODIFIES: this
+    // EFFECTS: removes quantity of item from inventory.
+    public void loseItem(Item item, int quantity) {
+        inventory.removeItem(item, quantity);
+        EventLog.getInstance().logEvent(
+                new Event(quantity + " " + item.getName() + "(s) were removed from inventory."));
     }
 
     @Override

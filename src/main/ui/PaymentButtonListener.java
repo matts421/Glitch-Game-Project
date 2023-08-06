@@ -32,7 +32,7 @@ public class PaymentButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Item coin = new Item("coin", TextColor.ANSI.GREEN, 0, 0);
-        game.getPlayer().getInventory().removeItem(coin, cost);
+        game.getPlayer().loseItem(coin, cost);
         if (type.equals("health")) {
             int currentHealth = game.getPlayer().getHealth();
             game.getPlayer().setHealth(currentHealth + 1);

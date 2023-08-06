@@ -10,6 +10,7 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// Tests for Enemy class
 public class EnemyTest {
     Enemy e;
     Enemy e2;

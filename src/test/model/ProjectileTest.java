@@ -10,6 +10,7 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// Tests for Projectile class
 public class ProjectileTest {
     Projectile projectile;
     GameCharacter gc;

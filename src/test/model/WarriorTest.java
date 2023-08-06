@@ -9,6 +9,7 @@ import java.awt.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// Tests for Warrior class
 public class WarriorTest {
     Warrior w;
 

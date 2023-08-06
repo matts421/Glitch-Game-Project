@@ -10,6 +10,7 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Tests for Item class
 public class ItemTest {
     Item item;
 

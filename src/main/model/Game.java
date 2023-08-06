@@ -58,6 +58,7 @@ public class Game implements Writable {
         if (checkEnded()) {
             ended = true;
         } else if (checkBeatLevel()) {
+            EventLog.getInstance().logEvent(new Event("Completed map stage " + map.getName()));
             levelOver = true;
         }
     }
@@ -114,14 +115,18 @@ public class Game implements Writable {
 
         if (playerEnemyCollision()) {
             player.loseHealth(Enemy.DAMAGE);
+            EventLog.getInstance().logEvent(
+                    new Event("Player took " + Enemy.DAMAGE + " point(s) of damage"));
             player.run(player.getDirection() * -2 * Game.UP_SCALE);
         }
 
         if (playerItemCollision()) {
             Item item = collidedItem();
             Item newItem = new Item(item.getName(), item.getColor(), 0, 0);
-            player.getInventory().addItem(newItem, map.getItems().getQuantity(item));
-            map.removeItem(item, map.getItems().getQuantity(item));
+            int quantity = map.getItems().getQuantity(item);
+            player.getInventory().addItem(newItem, quantity);
+            EventLog.getInstance().logEvent(new Event("Player picked up " + quantity + " coins!"));
+            map.removeItem(item, quantity);
         }
     }
 
@@ -141,26 +146,17 @@ public class Game implements Writable {
         if (player.getColor() == TextColor.ANSI.RED) {
             player = new Mage(currentHealth, currentMana, 1, currentAirborne,
                     currentX, currentY, currentInventory, model, currentMaxMana);
+            EventLog.getInstance().logEvent(new Event("Changed class to Mage."));
         } else if (player.getColor() == TextColor.ANSI.CYAN) {
             player = new Ranger(currentHealth, currentMana, 1, currentAirborne,
                     currentX, currentY, currentInventory, model, currentMaxMana);
+            EventLog.getInstance().logEvent(new Event("Changed class to Archer."));
         } else {
             player = new Warrior(currentHealth, currentMana, 1, currentAirborne,
                     currentX, currentY, currentInventory, model, currentMaxMana);
+            EventLog.getInstance().logEvent(new Event("Changed class to Warrior."));
         }
     }
-
-//    // EFFECTS: returns true if player is on a platform, false otherwise.
-//    public boolean onPlatform() {
-//        for (Rectangle barrier : map.getBarriers()) {
-//            if (barrier.y == (player.getPosY() + player.getModel().height) + 1
-//                    && barrier.x <= (player.getPosX() + player.getModel().width)
-//                    && (barrier.x + barrier.width) > player.getPosX()) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     // EFFECTS: returns true if player is on a platform, false otherwise.
     public boolean onPlatform() {
@@ -261,14 +257,23 @@ public class Game implements Writable {
                     projectilesToRemove.add(projectile);
                     enemiesToRemove.add(enemy);
                     generateMapCoins(enemy);
+                    EventLog.getInstance().logEvent(
+                            new Event("Projectile hit enemy at "
+                                    + "(" + enemy.getPosX() + "," + enemy.getPosY() + ")."));
                 }
             }
-
         }
-        for (Projectile projectile: projectilesToRemove) {
+        removeCollidedEntities(projectilesToRemove, enemiesToRemove);
+    }
+
+    // REQUIRES: all projectiles in projectiles and enemies in enemies are in the map
+    // MODIFIES: this
+    // EFFECTS: removes projectiles and enemies from map
+    private void removeCollidedEntities(ArrayList<Projectile> projectiles, ArrayList<Enemy> enemies) {
+        for (Projectile projectile: projectiles) {
             map.removeProjectile(projectile);
         }
-        for (Enemy enemy: enemiesToRemove) {
+        for (Enemy enemy: enemies) {
             map.removeEnemy(enemy);
         }
     }

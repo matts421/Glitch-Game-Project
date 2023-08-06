@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Tests for GameMap class
 public class GameMapTest {
     GameMap map;
     ArrayList<Rectangle> barriers;

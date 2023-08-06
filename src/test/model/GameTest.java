@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Tests for Game class
 public class GameTest {
     Game game;
     GameCharacter gc;
