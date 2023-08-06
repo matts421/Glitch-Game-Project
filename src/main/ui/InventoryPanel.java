@@ -16,6 +16,7 @@ public class InventoryPanel extends MainGamePanel {
     private ItemButtonListener ibl;
     private PaymentButtonListener hbl;
     private PaymentButtonListener mbl;
+    private Image largerCoin;
 
     // EFFECTS: initializes the inventory panel and creates buttons for adding health, mana, and dropping coins
     public InventoryPanel(Game g) {
@@ -24,6 +25,8 @@ public class InventoryPanel extends MainGamePanel {
         createHealthButton();
         createManaButton();
         addButtons();
+        largerCoin = coinImage.getScaledInstance(CELL_SIZE * 3 / 4, CELL_SIZE * 3 / 4,
+                Image.SCALE_DEFAULT);
     }
 
     // MODIFIES: g
@@ -158,14 +161,12 @@ public class InventoryPanel extends MainGamePanel {
 
     // REQUIRES: game.getPlayer().getInventory().getItems().contains(i)
     // MODIFIES: g
-    // EFFECTS: draws a single item cell in the inventory.
+    // EFFECTS: draws a single item cell in the inventory with enlarged coin sprite.
     private void drawItemCell(Graphics g, int posX, int posY, Item i, int quantity) {
         Color savedCol = g.getColor();
         g.setColor(new Color(52, 48, 48));
         g.fillRect(posX, posY, CELL_SIZE, CELL_SIZE);
-        g.setColor(i.getColor().toColor());
-        g.fillOval(posX + CELL_SIZE / 8, posY + CELL_SIZE / 8,
-                CELL_SIZE * 3 / 4, CELL_SIZE * 3 / 4);
+        g.drawImage(largerCoin, posX + CELL_SIZE / 8, posY + CELL_SIZE / 8, null);
         g.setColor(savedCol);
         g.drawString(i.getName().toUpperCase() + ": " + quantity, posX + CELL_SIZE / 4, posY);
     }
