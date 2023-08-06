@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 // Tests for Event class
 // NOTE: this class was heavily influenced from AlarmSystem
@@ -33,5 +34,23 @@ public class EventTest {
     @Test
     public void testToString() {
         assertEquals(d.toString() + "\n" + "test", e.toString());
+    }
+
+    @Test
+    public void testEqualsNull() {
+        Object o = null;
+        assertNotEquals(e, o);
+    }
+
+    @Test
+    public void testEqualsDifferentClass() {
+        String notAnEvent = "hello world";
+        assertNotEquals(e, notAnEvent);
+    }
+
+    @Test
+    public void testHashCode() {
+        int result = 13 * e.getDate().hashCode() + e.getDescription().hashCode();
+        assertEquals(result, e.hashCode());
     }
 }

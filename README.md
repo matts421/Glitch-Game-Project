@@ -57,3 +57,54 @@ commercial projects. The following artist's work has been utilized for this proj
 - *Icy Slime Enemies*
     - **[hredbird](https://hredbird.itch.io/)**
  
+
+# Phase 4: Task 2
+
+```
+Sat Aug 05 22:00:38 PDT 2023
+Projectile hit enemy at (330,540).
+Sat Aug 05 22:00:39 PDT 2023
+Player picked up 7 coins!
+Sat Aug 05 22:00:49 PDT 2023
+Projectile hit enemy at (450,90).
+Sat Aug 05 22:00:50 PDT 2023
+Player picked up 13 coins!
+Sat Aug 05 22:00:55 PDT 2023
+Projectile hit enemy at (90,60).
+Sat Aug 05 22:00:55 PDT 2023
+Player picked up 6 coins!
+Sat Aug 05 22:00:55 PDT 2023
+Completed map stage 1
+Sat Aug 05 22:01:00 PDT 2023
+1 coin(s) were removed from inventory.
+Sat Aug 05 22:01:00 PDT 2023
+1 coin(s) were removed from inventory.
+Sat Aug 05 22:01:00 PDT 2023
+1 coin(s) were removed from inventory.
+Sat Aug 05 22:01:00 PDT 2023
+1 coin(s) were removed from inventory.
+Sat Aug 05 22:01:00 PDT 2023
+1 coin(s) were removed from inventory.
+Sat Aug 05 22:01:00 PDT 2023
+1 coin(s) were removed from inventory.
+Sat Aug 05 22:01:02 PDT 2023
+Player picked up 6 coins!
+Sat Aug 05 22:01:13 PDT 2023
+100 coin(s) were removed from inventory.
+Sat Aug 05 22:01:13 PDT 2023
+Max mana set to 6
+Sat Aug 05 22:01:25 PDT 2023
+Changed class to Mage.
+Sat Aug 05 22:01:26 PDT 2023
+Changed class to Archer.
+Sat Aug 05 22:01:27 PDT 2023
+Player took 1 point(s) of damage
+Sat Aug 05 22:01:28 PDT 2023
+Player took 1 point(s) of damage
+Sat Aug 05 22:01:29 PDT 2023
+Player took 1 point(s) of damage
+Sat Aug 05 22:01:32 PDT 2023
+100 coin(s) were removed from inventory.
+Sat Aug 05 22:01:32 PDT 2023
+Health set to 3
+```
