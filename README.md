@@ -108,3 +108,45 @@ Sat Aug 05 22:01:32 PDT 2023
 Sat Aug 05 22:01:32 PDT 2023
 Health set to 3
 ```
+
+# Phase 4: Task 3
+
+Please note that, while the TerminalGame class exists within this project, it has not been included within the UML
+diagram. This is due to the fact that `Main` no longer interacts with TerminalGame. This class only exists in this
+project for legacy purposes from Phase 1.
+
+Upon looking at the UML diagram for this project, there are a few glaring issues that I would change given more time
+and the opportunity to refactor my code. First of all, there are a few classes that I should make abstract. Due to the
+nature of the game, the player will always have one of the three classes Mage, Archer, or Warrior. Hence, the
+GameCharacter class never needs to be instantiated. The simple fix to this issue would be to make GameCharacter
+abstract. Likewise, HasModel should no longer be a normal class. Because it has implementation of some shared methods,
+it cannot be declared an interface, and rather should be declared abstract as well. Moreover, far too many classes in
+the model package extend HasModel and implement Writable. Because everything that extends HasModel is Writable,
+HasModel should instead implement Writable, hence removing the necessity for all of its subclasses needing to implement
+Writable. In the same vein, Mage, Archer, and Warrior have no reason to implement Writable given their parent class,
+GameCharacter, already implements this interface. Furthermore, while not apparent from the UML diagram alone, a new
+class, Barrier, should be implemented in the model package. Currently, all the game map's barriers are represented
+by Java's built-in Rectangle class. However, because save and load functionality requires these objects to be saved in
+a JSON file, a rectangleToJson method was implemented within the HasModel package, and the GameMap class had to extend
+HasModel because of its dependence on barriers. This doesn't make physical sense, because the map doesn't actually have 
+a model or hit-box. With this refactor, GameMap would have a new relationship to a new custom class Barrier, which 
+would in turn extend HasModel. Otherwise, the model package follows design principles relatively well, but the UI
+package still needs to see some significant changes to confirm with proper practices.
+
+First of all, there is a large number of associations that are unnecessary in the UI package. ScorePanel and
+MainGamePanel are two particularly good examples. Because GuiGame has access to Game, ScorePanel and, MainGamePanel,
+ScorePanel and MainGamePanel do not need to be associated directly with Game. Instead, a bidirectional relationship
+between GuiGame and ScorePanel or MainGamePanel should be established in order to remove the redundant associations to 
+Game. An additional benefit of this change would also modify the ItemButtonListener and PaymentButtonListener's
+dependencies. With this proposed bidirectional, these two classes would no longer need a connection to Game. Moreover,
+GuiGame relying on two instances of MainGamePanel is misleading. Because those two instances are always one of
+GamePanel and one of InventoryPanel, GuiGame should instead have fields with those specific types. There is also
+a redundancy in the persistence part of the GUI. Because PersistencePanel has access to GuiGame, if the relationship
+between PersistencePanel and PersistenceButtonListener was bidirectional, PersistenceButtonListener could remove its
+dependence on GuiGame. Finally, the sprite handling is currently done in the MainGamePanel, GamePanel, and
+InventoryPanel classes. Because sprites are intrinsic to the objects they are referencing, sprites should
+be moved to become fields in the classes they respectively represent.
+
+Fortunately, all the classes already follow the principle of single responsibility, so there is minimal need to
+introduce new classes (other than the aforementioned Barrier class).
+
