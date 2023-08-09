@@ -128,24 +128,28 @@ GameCharacter, already implements this interface. Furthermore, while not apparen
 class, Barrier, should be implemented in the model package. Currently, all the game map's barriers are represented
 by Java's built-in Rectangle class. However, because save and load functionality requires these objects to be saved in
 a JSON file, a rectangleToJson method was implemented within the HasModel package, and the GameMap class had to extend
-HasModel because of its dependence on barriers. This doesn't make physical sense, because the map doesn't actually have 
-a model or hit-box. With this refactor, GameMap would have a new relationship to a new custom class Barrier, which 
+HasModel because of its association with barriers. This doesn't make physical sense, because the map doesn't actually
+have a model or hit-box. With this refactor, GameMap would have a new association to a new custom class Barrier, which 
 would in turn extend HasModel. Otherwise, the model package follows design principles relatively well, but the UI
 package still needs to see some significant changes to confirm with proper practices.
 
 First of all, there is a large number of associations that are unnecessary in the UI package. ScorePanel and
 MainGamePanel are two particularly good examples. Because GuiGame has access to Game, ScorePanel and, MainGamePanel,
-ScorePanel and MainGamePanel do not need to be associated directly with Game. Instead, a bidirectional relationship
+ScorePanel and MainGamePanel do not need to be associated directly with Game. Instead, a bidirectional association
 between GuiGame and ScorePanel or MainGamePanel should be established in order to remove the redundant associations to 
 Game. An additional benefit of this change would also modify the ItemButtonListener and PaymentButtonListener's
-dependencies. With this proposed bidirectional, these two classes would no longer need a connection to Game. Moreover,
+associations. With this proposed bidirectional, these two classes would no longer need an association to Game. Moreover,
 GuiGame relying on two instances of MainGamePanel is misleading. Because those two instances are always one of
 GamePanel and one of InventoryPanel, GuiGame should instead have fields with those specific types. There is also
-a redundancy in the persistence part of the GUI. Because PersistencePanel has access to GuiGame, if the relationship
+a redundancy in the persistence part of the GUI. Because PersistencePanel has access to GuiGame, if the association
 between PersistencePanel and PersistenceButtonListener was bidirectional, PersistenceButtonListener could remove its
-dependence on GuiGame. Finally, the sprite handling is currently done in the MainGamePanel, GamePanel, and
+association to GuiGame. Finally, the sprite handling is currently done in the MainGamePanel, GamePanel, and
 InventoryPanel classes. Because sprites are intrinsic to the objects they are referencing, sprites should
 be moved to become fields in the classes they respectively represent.
+
+An additional note is that the UI package could benefit from employing the observer design pattern. Instead of the
+ScorePanel having an association with Game, Game could extend a custom Observable class and ScorePanel could implement
+a custom Observer interface.
 
 Fortunately, all the classes already follow the principle of single responsibility, so there is minimal need to
 introduce new classes (other than the aforementioned Barrier class).
