@@ -152,5 +152,5 @@ ScorePanel having an association with Game, Game could extend a custom Observabl
 a custom Observer interface.
 
 Fortunately, all the classes already follow the principle of single responsibility, so there is minimal need to
-introduce new classes (other than the aforementioned Barrier class).
+introduce new classes (other than the aforementioned Barrier class). test
 
